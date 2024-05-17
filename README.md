@@ -1,4 +1,5 @@
 # typeid-kotlin
+![Build Status](https://github.com/aleris/typeid-kotlin/actions/workflows/build-on-push.yml/badge.svg)
 
 
 ## A Kotlin implementation of [TypeID](https://github.com/jetpack-io/typeid).

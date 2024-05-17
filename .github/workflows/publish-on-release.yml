@@ -1,0 +1,22 @@
+name: Publish
+on:
+  workflow_dispatch
+#  release:
+#    types: [created]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v3
+      - run: ./gradlew build
+      - run: ./gradlew publishAllPublicationsToOSSRHRepository
+    env:
+      ORG_GRADLE_PROJECT_OSSRHUsername: ${{ secrets.OSSRH_USERNAME }}
+      ORG_GRADLE_PROJECT_OSSRHPassword: ${{ secrets.OSSRH_TOKEN }}
+      ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_KEY }}
+      ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_PASSPHRASE }}
