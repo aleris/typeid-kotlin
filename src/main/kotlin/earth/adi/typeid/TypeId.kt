@@ -17,12 +17,20 @@ class TypeId(private var uuidGenerator: Supplier<UUID>) {
     return factory.create(entityType, uuidGenerator.get())
   }
 
+  fun randomId(prefix: String): RawId {
+    return RawId(prefix, uuidGenerator.get())
+  }
+
   inline fun <reified TEntity> of(uuid: UUID): Id<out TEntity> {
     return factory.create(uuid)
   }
 
   fun <TEntity> of(entityType: Class<out TEntity>, uuid: UUID): Id<out TEntity> {
     return factory.create(entityType, uuid)
+  }
+
+  fun of(prefix: String, uuid: UUID): RawId {
+    return RawId(prefix, uuid)
   }
 
   inline fun <reified TEntity> parse(id: String): Id<out TEntity> {
@@ -33,15 +41,23 @@ class TypeId(private var uuidGenerator: Supplier<UUID>) {
     return factory.parse(entityType, id)
   }
 
-  inline fun <reified TEntity> parseToValidated(id: String): Validated<out TEntity> {
+  fun parse(id: String): RawId {
+    return factory.parseToRaw(id)
+  }
+
+  inline fun <reified TEntity> parseToValidated(id: String): Validated<Id<out TEntity>> {
     return factory.parseToValidated<TEntity>(id)
   }
 
   fun <TEntity> parseToValidated(
       entityType: Class<out TEntity>,
       id: String
-  ): Validated<out TEntity> {
+  ): Validated<Id<out TEntity>> {
     return factory.parseToValidated(entityType, id)
+  }
+
+  fun parseToValidatedRaw(id: String): Validated<RawId> {
+    return factory.parseToValidatedRaw(id)
   }
 
   fun withUUIDGenerator(uuidGenerator: Supplier<UUID>): TypeId {
@@ -76,12 +92,20 @@ class TypeId(private var uuidGenerator: Supplier<UUID>) {
       return DEFAULT.randomId(entityType)
     }
 
+    fun randomId(prefix: String): RawId {
+      return DEFAULT.randomId(prefix)
+    }
+
     inline fun <reified TEntity> of(uuid: UUID): Id<out TEntity> {
       return DEFAULT.of<TEntity>(uuid)
     }
 
     fun <TEntity> of(entityType: Class<out TEntity>, uuid: UUID): Id<out TEntity> {
       return DEFAULT.of(entityType, uuid)
+    }
+
+    fun of(prefix: String, uuid: UUID): RawId {
+      return DEFAULT.of(prefix, uuid)
     }
 
     inline fun <reified TEntity> parse(id: String): Id<out TEntity> {
@@ -92,15 +116,23 @@ class TypeId(private var uuidGenerator: Supplier<UUID>) {
       return DEFAULT.parse(entityType, id)
     }
 
-    inline fun <reified TEntity> parseToValidated(id: String): Validated<out TEntity> {
+    fun parse(id: String): RawId {
+      return DEFAULT.parse(id)
+    }
+
+    inline fun <reified TEntity> parseToValidated(id: String): Validated<Id<out TEntity>> {
       return DEFAULT.parseToValidated<TEntity>(id)
     }
 
     fun <TEntity> parseToValidated(
         entityType: Class<out TEntity>,
         id: String
-    ): Validated<out TEntity> {
+    ): Validated<Id<out TEntity>> {
       return DEFAULT.parseToValidated(entityType, id)
+    }
+
+    fun parseToValidatedRaw(id: String): Validated<RawId> {
+      return DEFAULT.parseToValidatedRaw(id)
     }
 
     fun jacksonModule() = DEFAULT.jacksonModule()

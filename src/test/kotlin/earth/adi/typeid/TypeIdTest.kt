@@ -19,6 +19,12 @@ class TypeIdTest {
   }
 
   @Test
+  fun `default randomId raw`() {
+    val userId = TypeId.randomId("user")
+    assertThat(userId.toString()).startsWith("user_")
+  }
+
+  @Test
   fun `default of`() {
     val userId = TypeId.of<User>(UUID.fromString("00000000-0000-0000-0000-000000000000"))
     assertThat(userId.toString()).startsWith("user_")
@@ -28,6 +34,12 @@ class TypeIdTest {
   fun `default of with entity type`() {
     val userId =
         TypeId.of(User::class.java, UUID.fromString("00000000-0000-0000-0000-000000000000"))
+    assertThat(userId.toString()).startsWith("user_")
+  }
+
+  @Test
+  fun `default of raw`() {
+    val userId = TypeId.of("user", UUID.fromString("00000000-0000-0000-0000-000000000000"))
     assertThat(userId.toString()).startsWith("user_")
   }
 
@@ -52,6 +64,18 @@ class TypeIdTest {
   }
 
   @Test
+  fun `default parse raw valid`() {
+    val userId = TypeId.randomId("user")
+    val parsedUserId = TypeId.parse(userId.toString())
+    assertThat(parsedUserId).isEqualTo(userId)
+  }
+
+  @Test
+  fun `default parse raw invalid`() {
+    assertThatThrownBy { TypeId.parse("_") }.isInstanceOf(IllegalArgumentException::class.java)
+  }
+
+  @Test
   fun `default parseToValidated valid`() {
     val userId = TypeId.randomId<User>()
     val parsedUserId = TypeId.parseToValidated<User>(userId.toString())
@@ -72,6 +96,22 @@ class TypeIdTest {
     val userId = TypeId.randomId<User>()
     val parsedUserId = TypeId.parseToValidated(User::class.java, userId.toString())
     assertThat(parsedUserId).isEqualTo(Validated.Valid(userId))
+  }
+
+  @Test
+  fun `default parseToValidatedRaw valid`() {
+    val userId = TypeId.randomId("user")
+    val parsedUserId = TypeId.parseToValidatedRaw(userId.toString())
+    assertThat(parsedUserId).isEqualTo(Validated.Valid(userId))
+  }
+
+  @Test
+  fun `default parseToValidatedRaw invalid`() {
+    val parsedUserId = TypeId.parseToValidatedRaw("_")
+    assertThat(parsedUserId).isInstanceOf(Validated.Invalid::class.java)
+    assertThat(parsedUserId)
+        .isEqualTo(
+            Validated.Invalid<User>("Id with empty prefix must not contain the separator '_'"))
   }
 
   // The instance keeps a cache of prefixes so, where performance matters, create it only once

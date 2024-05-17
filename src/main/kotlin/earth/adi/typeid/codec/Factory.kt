@@ -2,6 +2,7 @@ package earth.adi.typeid.codec
 
 import com.fasterxml.jackson.databind.util.LRUMap
 import earth.adi.typeid.Id
+import earth.adi.typeid.RawId
 import earth.adi.typeid.TypedPrefix
 import earth.adi.typeid.Validated
 import java.util.*
@@ -33,17 +34,31 @@ class Factory {
     }
   }
 
-  inline fun <reified TEntity> parseToValidated(id: String): Validated<out TEntity> {
+  fun parseToRaw(id: String): RawId {
+    return when (val decodedId = Codec.decode(id)) {
+      is Decoded.Valid -> RawId(decodedId.prefix, decodedId.uuid)
+      is Decoded.Invalid -> throw IllegalArgumentException(decodedId.error)
+    }
+  }
+
+  inline fun <reified TEntity> parseToValidated(id: String): Validated<Id<out TEntity>> {
     return parseToValidated(TEntity::class.java, id)
   }
 
   fun <TEntity> parseToValidated(
       entityType: Class<out TEntity>,
       id: String
-  ): Validated<out TEntity> {
+  ): Validated<Id<out TEntity>> {
     val prefix = getOrCreatePrefix(entityType)
     return when (val decodedId = Codec.decode(prefix, id)) {
       is Decoded.Valid -> Validated.Valid(Id(prefix, decodedId.uuid))
+      is Decoded.Invalid -> Validated.Invalid(decodedId.error)
+    }
+  }
+
+  fun parseToValidatedRaw(id: String): Validated<RawId> {
+    return when (val decodedId = Codec.decode(id)) {
+      is Decoded.Valid -> Validated.Valid(RawId(decodedId.prefix, decodedId.uuid))
       is Decoded.Invalid -> Validated.Invalid(decodedId.error)
     }
   }

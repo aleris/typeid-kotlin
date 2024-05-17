@@ -5,7 +5,7 @@ import java.io.Serializable
 import java.util.*
 
 /**
- * A typed identifier that combines a [TypedPrefix] with a [UUID].
+ * A type-safe TypeId identifier that combines a [TypedPrefix] with a [UUID].
  *
  * Usage:
  * ```
@@ -40,7 +40,8 @@ data class Id<TEntity>(val typedPrefix: TypedPrefix<out TEntity>, val uuid: UUID
   }
 
   /**
-   * Serializes the typed identifier to a prefixed string and encoded uuid suffix, separated by _.
+   * Serializes the type-safe TypeId identifier to a prefixed string and encoded uuid suffix,
+   * separated by _.
    */
   override fun toString(): String {
     return Codec.encode(typedPrefix.prefix, uuid)
