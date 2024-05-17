@@ -1,0 +1,32 @@
+[versions]
+kotlin = "1.9.24"
+spotless = "6.25.0"
+javaUuidGenerator = "5.0.0"
+jackson = "2.17.0"
+junit = "5.10.2"
+assertj = "3.25.3"
+jmh = "0.7.2"
+jqwik = "1.8.4"
+
+[plugins]
+jmh = { id = "me.champeau.jmh", version.ref = "jmh" }
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+
+[libraries]
+javaUuidGenerator = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "javaUuidGenerator" }
+jacksonBom = { module = "com.fasterxml.jackson:jackson-bom", version.ref = "jackson" }
+jacksonDatabind = { module = "com.fasterxml.jackson.core:jackson-databind" }
+jacksonModuleKotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
+
+junitBom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junitJupiterEngine = { module = "org.junit.jupiter:junit-jupiter-engine" }
+junitJupiterApi = { module = "org.junit.jupiter:junit-jupiter-api" }
+junitJupiterParams = { module = "org.junit.jupiter:junit-jupiter-params" }
+assertjCore = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+jqwik = { module = "net.jqwik:jqwik", version.ref = "jqwik" }
+jacksonDataformatYaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
+
+[bundles]
+jackson = ["jacksonDatabind", "jacksonModuleKotlin"]
+test = ["junitJupiterEngine", "junitJupiterApi", "junitJupiterParams", "assertjCore", "jqwik", "jacksonDataformatYaml"]

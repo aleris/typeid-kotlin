@@ -1,0 +1,11 @@
+<component name="CopyrightManager">
+  <settings>
+    <LanguageOptions name="JAVA">
+      <option name="fileLocation" value="2" />
+    </LanguageOptions>
+    <LanguageOptions name="Kotlin">
+      <option name="fileTypeOverride" value="1" />
+    </LanguageOptions>
+    <LanguageOptions name="Scala" />
+  </settings>
+</component>
