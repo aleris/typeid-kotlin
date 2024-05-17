@@ -7,11 +7,15 @@ junit = "5.10.2"
 assertj = "3.25.3"
 jmh = "0.7.2"
 jqwik = "1.8.4"
+jreleaser = "1.12.0"
+dokka = "1.9.20"
 
 [plugins]
 jmh = { id = "me.champeau.jmh", version.ref = "jmh" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+jreleaser = { id = "org.jreleaser", version.ref = "jreleaser" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 
 [libraries]
 javaUuidGenerator = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "javaUuidGenerator" }

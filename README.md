@@ -1,5 +1,6 @@
 # typeid-kotlin
 ![Build Status](https://github.com/aleris/typeid-kotlin/actions/workflows/build-on-push.yml/badge.svg)
+![Current Version](https://img.shields.io/badge/Version-0.0.4-blue)
 
 
 ## A Kotlin implementation of [TypeID](https://github.com/jetpack-io/typeid).
@@ -9,7 +10,7 @@ UUIDv7 standard. They provide a ton of nice properties that make them a great ch
 as the primary identifiers for your data in a database, APIs, and distributed systems.
 Read more about TypeIDs in their [spec](https://github.com/jetpack-io/typeid).
 
-Based on the Java implementation from [typeid-java](https://github.com/fxlae/typeid-java).
+Based on the Java implementation from [fxlae/typeid-java](https://github.com/fxlae/typeid-java).
 
 This implementation adds a more complete type safety including id and their prefixes and uses an idiomatic Kotlin API.
 
@@ -22,14 +23,14 @@ To use with Maven:
 <dependency>
     <groupId>earth.adi</groupId>
     <artifactId>typeid-kotlin</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.4</version>
 </dependency>
 ```
 
 To use via Gradle:
 
 ```kotlin
-implementation("earth.adi:typeid-kotlin:0.0.1")
+implementation("earth.adi:typeid-kotlin:0.0.4")
 ```
 
 
@@ -46,7 +47,7 @@ To use the typed features of the library, you need to define your typed id assoc
 
 ```kotlin
 // Define your identifiable entity type:
- data class User(val id: UserId) // can contain other fields
+data class User(val id: UserId) // can contain other fields
 
 // Define a typealias for the user id.
 typealias UserId = Id<out User>
@@ -185,22 +186,43 @@ val read = objectMapper.readValue<JsonUserAndOrganization>(writtenJson)
 ```
 
 
-## Building From Source & Benchmarks
+## Building From Source
  <details>
     <summary>Details</summary>
 
 ```console
 ~$ git clone https://github.com/aleris/typeid-kotlin.git
 ~$ cd typeid-kotling
+~/typeid-kotlin sdk use java 17.0.9-tem
 ~/typeid-kotlin ./gradlew build
 ```
+</details>
+
+
+## Releasing
+ <details>
+    <summary>Details</summary>
+
+```console
+~$ cd typeid-kotling
+~/typeid-kotlin ./gradlew jreleaserConfig
+~/typeid-kotlin ./gradlew clean
+~/typeid-kotlin ./gradlew publish
+~/typeid-kotlin ./gradlew jreleaserFullRelease
+```
+</details>
+
+
+## Benchmarks
+<details>
+    <summary>Details</summary>
 
 There is a small [JMH](https://github.com/openjdk/jmh) microbenchmark included:
 ```console
 ~/typeid-kotlin ./gradlew jmh
 ```
 
-In a single-threaded run, all operations perform in the range of millions of calls per second, 
+In a single-threaded run, all operations perform in the range of millions of calls per second,
 which should be enough for most use cases (used setup: Eclipse Temurin 17 JDK, 2021 MacBook Pro).
 
 | Benchmark                           | Mode  | Cnt |          Score |           Error | Units |

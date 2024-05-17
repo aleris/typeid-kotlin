@@ -14,9 +14,13 @@ jobs:
           java-version: 17
       - uses: gradle/actions/setup-gradle@v3
       - run: ./gradlew build
-      - run: ./gradlew publishAllPublicationsToOSSRHRepository
+      - run: ./gradlew publish
+      - run: ./gradlew jreleaserFullRelease
     env:
-      ORG_GRADLE_PROJECT_OSSRHUsername: ${{ secrets.OSSRH_USERNAME }}
-      ORG_GRADLE_PROJECT_OSSRHPassword: ${{ secrets.OSSRH_TOKEN }}
-      ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_KEY }}
-      ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_PASSPHRASE }}
+      ENV: "CI"
+      JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.JRELEASER_GPG_PUBLIC_KEY }}
+      JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
+      JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
+      JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.JRELEASER_MAVENCENTRAL_USERNAME }}
+      JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.JRELEASER_MAVENCENTRAL_TOKEN }}
+      JRELEASER_GITHUB_TOKEN: ${{ secrets.JRELEASER_GITHUB_TOKEN }}

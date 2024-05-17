@@ -1,3 +1,6 @@
+/**
+ * TypeId Module.
+ */
 module earth.adi.typeid {
   requires com.fasterxml.uuid;
   requires com.fasterxml.jackson.databind;
