@@ -74,6 +74,19 @@ Alternatively, if you do not want to customize prefixes (see below), directly us
 val userId = TypeId.randomId<User>()
 ```
 
+Not using a specific entity type, but an explicit prefix will instead generate a `RawId`:
+
+```kotlin
+val rawId = typeId.randomId("custom")
+println(rawId) // prints something like custom_01h455vb4pex5vsknk084sn02q
+```
+
+Raw ids are just a string with a prefix and a UUID, without any type information, 
+so it is better to use typed ids whenever possible (see [Type safety](#type-safety) below).
+
+All methods described below also have raw variants.
+
+
 #### of
 
 To construct (or reconstruct) an `Id` from an `UUID`:
@@ -125,8 +138,12 @@ when(validated) {
 The `Validated` class includes a couple of functional style helper methods like `filter` and `map`.
 
 Example:
-```kotlin
 
+```kotlin
+val validated = typeId.parseToValidated<User>("user_01h455vb4pex5vsknk084sn02q")
+validated.filter { it.id == idFromSomewhereElse }
+  .map { it.id }
+  .ifValid { println("Valid id: $it") }
 ```
 
 Another safe alternative for working with validated is to use Kotlin functions like:
@@ -136,13 +153,47 @@ val id = typeId.parseToValidated<User>("user_01h455vb4pex5vsknk084sn02q")
   .takeIf { it is Validated.Valid }
   ?.let { it as Validated.Valid }
   ?.id
+if (id != null) {
+  println("Valid id: $id")
+}
 ```
+
+These approaches are much faster when the input is untrusted and can result in lots of exceptions otherwise 
+(see [Benchmarks](#benchmarks)).
 
 
 ### Type safety
 
+At its base, a `typeid` is just a prefix followed by _ and an encoded UUID 
+(see the [spec](https://github.com/jetify-com/typeid/tree/main/spec)). 
+After it is encoded is just a string.
 
-### Raw ids
+This could result in bugs if you accidentally mix up ids from different entities.
+
+```kotlin
+val id = typeId().randomId("user")
+
+// ... sometime later
+val orgExists = someService.checkIfOrganizationExists(id)
+// returns false most of the time so the bug may be hard to find
+```
+
+The library provides a type-safe way to work with these ids, by associating them with a specific type.
+
+1. Fail if unexpected prefix is used
+```kotlin
+// fails if id does not have a `user` prefix
+val userId = typeId().parse<User>(id) 
+```
+
+2. Compile time safety
+```kotlin
+val id = typeId().parse<User>(text)
+
+// ... sometime later
+val orgExists = someService.checkIfOrganizationExists(id)
+// compile error, as id is of type `Id<User` (or `UserId` if using a typealias), not Id<Organization>
+```
 
 
 ### Customizing prefixes
@@ -154,7 +205,8 @@ val typeId = typeId().withCustomPrefix(TypedPrefix<Organization>("org"))
 println(typeId.randomId<Organization>()) // prints something like org_01h455vb4pex5vsknk084sn02q
 ```
 
-### Customizing UUID generator
+
+### Customizing the UUID generator
 
 By default, the library uses the `UUIDv7` generator, but you can provide your own generator.
 
