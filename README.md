@@ -1,6 +1,6 @@
 # typeid-kotlin
 ![Build Status](https://github.com/aleris/typeid-kotlin/actions/workflows/build-on-push.yml/badge.svg)
-![Current Version](https://img.shields.io/badge/Version-0.0.4-blue)
+![Current Version](https://img.shields.io/badge/Version-0.0.5-blue)
 
 
 ## A Kotlin implementation of [TypeID](https://github.com/jetpack-io/typeid).
@@ -23,14 +23,14 @@ To use with Maven:
 <dependency>
     <groupId>earth.adi</groupId>
     <artifactId>typeid-kotlin</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
 </dependency>
 ```
 
 To use via Gradle:
 
 ```kotlin
-implementation("earth.adi:typeid-kotlin:0.0.4")
+implementation("earth.adi:typeid-kotlin:0.0.5")
 ```
 
 
@@ -68,7 +68,7 @@ println(typeId.typedPrefix.prefix) // "user"
 println(typeId.uuid) // java.util.UUID(01890a5d-ac96-774b-bcce-b302099a8057)
 ```
 
-Alternatively, if you do not want to customize prefixes, directly use the static methods in `TypeId`:
+Alternatively, if you do not want to customize prefixes (see below), directly use the static methods in `TypeId`:
     
 ```kotlin
 val userId = TypeId.randomId<User>()
@@ -122,6 +122,13 @@ when(validated) {
 }
 ```
 
+The `Validated` class includes a couple of functional style helper methods like `filter` and `map`.
+
+Example:
+```kotlin
+
+```
+
 Another safe alternative for working with validated is to use Kotlin functions like:
 
 ```kotlin
@@ -130,6 +137,12 @@ val id = typeId.parseToValidated<User>("user_01h455vb4pex5vsknk084sn02q")
   ?.let { it as Validated.Valid }
   ?.id
 ```
+
+
+### Type safety
+
+
+### Raw ids
 
 
 ### Customizing prefixes
@@ -205,7 +218,9 @@ val read = objectMapper.readValue<JsonUserAndOrganization>(writtenJson)
 
 ```console
 ~$ cd typeid-kotling
-~/typeid-kotlin ./gradlew jreleaserConfig
+# Update version in build.gradle.kts
+~/typeid-kotlin ./gradlew updateReadmeVersion # updates the version in README.md from build.gradle.kts
+~/typeid-kotlin ./gradlew jreleaserConfig # just to double check the configuration
 ~/typeid-kotlin ./gradlew clean
 ~/typeid-kotlin ./gradlew publish
 ~/typeid-kotlin ./gradlew jreleaserFullRelease

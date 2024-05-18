@@ -209,8 +209,8 @@ object Codec {
       return ValidatedSuffix(false, "Suffix with illegal length, must be $SUFFIX_LENGTH")
     }
 
-    val startCode = input[start].code
-    if (startCode >= SUFFIX_LOOKUP.size || ((SUFFIX_LOOKUP[startCode] ushr 3) and 0x3L) > 0) {
+    val startCode = input[start]
+    if (startCode < '0' || startCode > '7') {
       return ValidatedSuffix(false, "Illegal leftmost suffix character, must be one of [01234567]")
     }
 
