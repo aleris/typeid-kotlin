@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.PropertyName
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import earth.adi.typeid.jackson.IdJsonDeserializer
+import earth.adi.typeid.jackson.IdJsonSerializer
+import earth.adi.typeid.jackson.RawIdJsonSerializer
+import java.io.ByteArrayOutputStream
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -77,6 +80,29 @@ class JacksonJsonTest {
     assertThat(writtenJson).isEqualTo(JSON_IDS_ONLY)
   }
 
+  data class RawIds(
+      @JsonProperty("user_id") val userId: RawId,
+      @JsonProperty("org_id") val organizationId: RawId,
+  )
+
+  @Test
+  fun `deserialize raw ids from json`() {
+    val json = objectMapper.readValue<RawIds>(JSON_IDS_ONLY)
+    assertThat(json.userId).isEqualTo(typeId.parse("user_01hy0d96sgfx0rh975kqkspchh"))
+    assertThat(json.organizationId).isEqualTo(typeId.parse("org_01hy0sk45qfmdsdme1j703yjet"))
+  }
+
+  @Test
+  fun `serialize raw ids to json`() {
+    val json =
+        RawIds(
+            typeId.parse("user_01hy0d96sgfx0rh975kqkspchh"),
+            typeId.parse("org_01hy0sk45qfmdsdme1j703yjet"),
+        )
+    val writtenJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json)
+    assertThat(writtenJson).isEqualTo(JSON_IDS_ONLY)
+  }
+
   @Test
   fun `create IdJsonDeserializer null deserializerContext`() {
     val type = objectMapper.constructType(Id::class.java)
@@ -99,6 +125,22 @@ class JacksonJsonTest {
     val idJsonDeserializer =
         IdJsonDeserializer(typeId()).createContextual(null, null) as IdJsonDeserializer
     assertThat(idJsonDeserializer.valueType).isNull()
+  }
+
+  @Test
+  fun `IdJsonSerializer null id`() {
+    ByteArrayOutputStream().use { outputStream ->
+      IdJsonSerializer().serialize(null, objectMapper.createGenerator(outputStream), null)
+      assertThat(outputStream.toString()).isEqualTo("")
+    }
+  }
+
+  @Test
+  fun `RawIdJsonSerializer null id`() {
+    ByteArrayOutputStream().use { outputStream ->
+      RawIdJsonSerializer().serialize(null, objectMapper.createGenerator(outputStream), null)
+      assertThat(outputStream.toString()).isEqualTo("")
+    }
   }
 
   companion object {

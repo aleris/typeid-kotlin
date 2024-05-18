@@ -29,6 +29,9 @@ import java.util.*
  * }
  * ```
  *
+ * It is possible to create an `Id` directly, but it is recommended to use the `TypeId` factory
+ * methods.
+ *
  * @param TEntity the type of the associated entity with the identifier
  * @constructor Creates a new typed identifier with the specified [typedPrefix] and [uuid].
  * @property typedPrefix the typed prefix of the identifier

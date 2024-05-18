@@ -9,6 +9,12 @@ import earth.adi.typeid.Id
 import earth.adi.typeid.TypeId
 import java.io.IOException
 
+/**
+ * A Jackson deserializer for [Id] objects.
+ *
+ * @param typeId the type id instance to use for parsing the id
+ * @param valueType value type of the id
+ */
 class IdJsonDeserializer
 @JvmOverloads
 constructor(private val typeId: TypeId, valueType: JavaType? = null) :

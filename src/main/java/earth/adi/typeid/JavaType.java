@@ -4,6 +4,9 @@ package earth.adi.typeid;
  * JavaType.
  */
 public class JavaType {
+  /**
+   * Create a new JavaType instance.
+   */
   public static JavaType of(Class<?> clazz) {
     return new JavaType(clazz);
   }
@@ -14,6 +17,9 @@ public class JavaType {
     this.clazz = clazz;
   }
 
+  /**
+   * Get the clazz.
+   */
   public Class<?> getClazz() {
     return clazz;
   }
