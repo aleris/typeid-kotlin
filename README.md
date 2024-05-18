@@ -192,7 +192,8 @@ val id = typeId().parse<User>(text)
 
 // ... sometime later
 val orgExists = someService.checkIfOrganizationExists(id)
-// compile error, as id is of type `Id<User` (or `UserId` if using a typealias), not Id<Organization>
+// compile error, as id is of type `Id<User>` (or `UserId` if using a typealias), 
+// not Id<Organization>
 ```
 
 
