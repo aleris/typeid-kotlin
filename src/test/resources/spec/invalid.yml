@@ -67,7 +67,7 @@
   # This example has the right length, so that the failure is caused by the hyphens
   # and not the suffix length
   typeid: "prefix_123456789-123456789-123456"
-  description: "The suffix should be lowercase with no uppercase letters"
+  description: "The suffix can't have any hyphens"
 
 - name: suffix-wrong-alphabet
   typeid: "prefix_ooooooiiiiiiuuuuuuulllllll"
