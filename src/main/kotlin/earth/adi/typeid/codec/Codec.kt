@@ -3,6 +3,11 @@ package earth.adi.typeid.codec
 import earth.adi.typeid.TypedPrefix
 import java.util.*
 
+/**
+ * Encodes and decodes UUIDs into/from a string representation.
+ *
+ * See [the typeid spec](https://github.com/jetify-com/typeid/tree/main/spec) for more details.
+ */
 // original source from
 // https://github.com/fxlae/typeid-java/blob/main/lib/src/main/java/de/fxlae/typeid/lib/TypeIdLib.java
 object Codec {
@@ -50,6 +55,13 @@ object Codec {
   )
   // spotless:on
 
+  /**
+   * Encodes a prefix and UUID into a typeid string representation.
+   *
+   * @param prefix the prefix to prepend to the encoded id
+   * @param uuid the UUID to encode
+   * @return the encoded string
+   */
   fun encode(prefix: String, uuid: UUID): String {
     val msb = uuid.mostSignificantBits
     val lsb = uuid.leastSignificantBits
@@ -98,12 +110,24 @@ object Codec {
     return sb.toString()
   }
 
+  /**
+   * Checks if the given prefix is valid.
+   *
+   * @throws IllegalArgumentException if the prefix is invalid
+   */
   fun requireValidPrefix(prefix: String) {
     require(prefix.isNotBlank()) { "Prefix must not be blank" }
     val validatedPrefix = validatePrefixOnInput(prefix, prefix.length)
     require(validatedPrefix.isValid) { validatedPrefix }
   }
 
+  /**
+   * Decodes a typeid string representation into a prefix and UUID.
+   *
+   * @param expectedPrefix the prefix that is expected to be present in the input
+   * @param text the encoded string
+   * @return the decoded prefix and UUID as a [Decoded] object
+   */
   fun decode(expectedPrefix: TypedPrefix<*>, text: String): Decoded {
     return when (val decoded = decode(text)) {
       is Decoded.Valid -> {
@@ -118,6 +142,12 @@ object Codec {
     }
   }
 
+  /**
+   * Decodes a typeid string representation into a prefix and UUID.
+   *
+   * @param text the encoded string
+   * @return the decoded prefix and UUID as a [Decoded] object
+   */
   fun decode(text: String): Decoded {
     val separatorIndex = text.lastIndexOf(SEPARATOR)
 

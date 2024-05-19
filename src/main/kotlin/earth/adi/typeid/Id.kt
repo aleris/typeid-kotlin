@@ -49,11 +49,4 @@ data class Id<TEntity>(val typedPrefix: TypedPrefix<out TEntity>, val uuid: UUID
   override fun toString(): String {
     return Codec.encode(typedPrefix.prefix, uuid)
   }
-
-  companion object {
-    /**
-     * The suffix for all id types, used for creating default prefixes from the identifier names.
-     */
-    const val ID_SUFFIX = "Id"
-  }
 }

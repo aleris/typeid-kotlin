@@ -14,7 +14,7 @@ plugins {
 
 group = "earth.adi"
 
-version = "0.0.7"
+version = "0.0.8"
 
 repositories { mavenCentral() }
 
@@ -52,10 +52,7 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
   }
 }
 
-task<Exec>("updateReadmeVersion") {
-  //  mustRunAfter(tasks.build)
-  commandLine("sh", "./scripts/updateReadmeVersion.sh")
-}
+task<Exec>("updateReadmeVersion") { commandLine("sh", "./scripts/updateReadmeVersion.sh") }
 
 tasks.test {
   useJUnitPlatform()
@@ -150,7 +147,15 @@ publishing {
   repositories { maven { url = stagingDir.get().asFile.toURI() } }
 }
 
-tasks.publish { dependsOn(tasks.dokkaJekyll) }
+tasks {
+  register<Jar>("dokkaJar") {
+    from(dokkaHtml)
+    dependsOn(dokkaHtml)
+    archiveClassifier.set("javadoc")
+  }
+}
+
+tasks.publish { dependsOn(tasks.dokkaHtml) }
 
 jreleaser {
   project {
