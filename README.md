@@ -14,6 +14,8 @@ Based on the Java implementation from [fxlae/typeid-java](https://github.com/fxl
 
 This implementation adds a more complete type safety including id and their prefixes and uses an idiomatic Kotlin API.
 
+[API Documentation](https://aleris.github.io/typeid-kotlin/)
+
 
 ## Dependency
 
