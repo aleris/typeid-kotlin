@@ -44,6 +44,11 @@ $dokka.location:earth.adi.typeid.jackson/TypeIdModule///PointingToDeclaration/t
 $dokka.location:earth.adi.typeid.jackson/TypeIdModule/TypeIdModule/#earth.adi.typeid.TypeId/PointingToDeclaration/typeid-kotlin/earth.adi.typeid.jackson/-type-id-module/-type-id-module.html
 $dokka.location:earth.adi.typeid.jackson/TypeIdModule/getModuleName/#/PointingToDeclaration/typeid-kotlin/earth.adi.typeid.jackson/-type-id-module/get-module-name.html
 $dokka.location:earth.adi.typeid.jackson/TypeIdModule/version/#/PointingToDeclaration/typeid-kotlin/earth.adi.typeid.jackson/-type-id-module/version.html
+$dokka.location:earth.adi.typeid.serialization////PointingToDeclaration/typeid-kotlin/earth.adi.typeid.serialization/index.html
+$dokka.location:earth.adi.typeid.serialization/UUIDKSerializer///PointingToDeclaration/typeid-kotlin/earth.adi.typeid.serialization/-u-u-i-d-k-serializer/index.html
+$dokka.location:earth.adi.typeid.serialization/UUIDKSerializer/descriptor/#/PointingToDeclaration/typeid-kotlin/earth.adi.typeid.serialization/-u-u-i-d-k-serializer/descriptor.html
+$dokka.location:earth.adi.typeid.serialization/UUIDKSerializer/deserialize/#kotlinx.serialization.encoding.Decoder/PointingToDeclaration/typeid-kotlin/earth.adi.typeid.serialization/-u-u-i-d-k-serializer/deserialize.html
+$dokka.location:earth.adi.typeid.serialization/UUIDKSerializer/serialize/#kotlinx.serialization.encoding.Encoder#java.util.UUID/PointingToDeclaration/typeid-kotlin/earth.adi.typeid.serialization/-u-u-i-d-k-serializer/serialize.html
 $dokka.location:earth.adi.typeid////PointingToDeclaration/typeid-kotlin/earth.adi.typeid/index.html
 $dokka.location:earth.adi.typeid//typeId/#/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/type-id.html
 $dokka.location:earth.adi.typeid/Id///PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-id/index.html
@@ -112,4 +117,5 @@ $dokka.location:earth.adi.typeid/Validated/orElse/#java.util.function.Supplier[T
 earth.adi.typeid
 earth.adi.typeid.codec
 earth.adi.typeid.jackson
+earth.adi.typeid.serialization
 
