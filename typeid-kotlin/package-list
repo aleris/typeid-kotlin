@@ -1,5 +1,8 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
+$dokka.location:earth.adi.typeid.annotations////PointingToDeclaration/typeid-kotlin/earth.adi.typeid.annotations/index.html
+$dokka.location:earth.adi.typeid.annotations/TypeIdPrefix///PointingToDeclaration/typeid-kotlin/earth.adi.typeid.annotations/-type-id-prefix/index.html
+$dokka.location:earth.adi.typeid.annotations/TypeIdPrefix/value/#/PointingToDeclaration/typeid-kotlin/earth.adi.typeid.annotations/-type-id-prefix/value.html
 $dokka.location:earth.adi.typeid.codec////PointingToDeclaration/typeid-kotlin/earth.adi.typeid.codec/index.html
 $dokka.location:earth.adi.typeid.codec/Codec///PointingToDeclaration/typeid-kotlin/earth.adi.typeid.codec/-codec/index.html
 $dokka.location:earth.adi.typeid.codec/Codec/decode/#earth.adi.typeid.TypedPrefix[*]#kotlin.String/PointingToDeclaration/typeid-kotlin/earth.adi.typeid.codec/-codec/decode.html
@@ -115,6 +118,7 @@ $dokka.location:earth.adi.typeid/Validated/map/#java.util.function.Function[Type
 $dokka.location:earth.adi.typeid/Validated/orElse/#TypeParam(bounds=[kotlin.Any?])/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-validated/or-else.html
 $dokka.location:earth.adi.typeid/Validated/orElse/#java.util.function.Supplier[TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-validated/or-else.html
 earth.adi.typeid
+earth.adi.typeid.annotations
 earth.adi.typeid.codec
 earth.adi.typeid.jackson
 earth.adi.typeid.serialization
