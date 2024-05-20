@@ -5,6 +5,7 @@ import earth.adi.typeid.Id
 import earth.adi.typeid.RawId
 import earth.adi.typeid.TypedPrefix
 import earth.adi.typeid.Validated
+import earth.adi.typeid.annotations.TypeIdPrefix
 import java.util.*
 
 /**
@@ -181,6 +182,13 @@ class Factory {
   }
 
   private fun <TEntity> defaultPrefix(entityType: Class<out TEntity>): TypedPrefix<out TEntity> {
+    entityType.annotations
+        .find { it is TypeIdPrefix }
+        ?.let {
+          val typeIdPrefix = (it as TypeIdPrefix).value
+          Codec.requireValidPrefix(typeIdPrefix)
+          return TypedPrefix(typeIdPrefix)
+        }
     return TypedPrefix(entityType.simpleName.lowercase())
   }
 }

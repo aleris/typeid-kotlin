@@ -1,4 +1,6 @@
-package earth.adi.typeid
+package earth.adi.typeid.testentities
+
+import earth.adi.typeid.Id
 
 data class Organization(val id: OrganizationId)
 

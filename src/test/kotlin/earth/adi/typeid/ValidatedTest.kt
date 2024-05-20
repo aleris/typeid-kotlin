@@ -1,5 +1,7 @@
 package earth.adi.typeid
 
+import earth.adi.typeid.testentities.User
+import earth.adi.typeid.testentities.UserId
 import java.util.concurrent.atomic.AtomicBoolean
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

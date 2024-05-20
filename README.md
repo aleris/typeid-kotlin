@@ -1,6 +1,6 @@
 # typeid-kotlin
 ![Build Status](https://github.com/aleris/typeid-kotlin/actions/workflows/build-on-push.yml/badge.svg)
-![Current Version](https://img.shields.io/badge/Version-0.0.10-blue)
+![Current Version](https://img.shields.io/badge/Version-0.0.11-blue)
 
 
 ## A Kotlin implementation of [TypeID](https://github.com/jetpack-io/typeid).
@@ -25,14 +25,14 @@ To use with Maven:
 <dependency>
     <groupId>earth.adi</groupId>
     <artifactId>typeid-kotlin</artifactId>
-    <version>0.0.10</version>
+    <version>0.0.11</version>
 </dependency>
 ```
 
 To use via Gradle:
 
 ```kotlin
-implementation("earth.adi:typeid-kotlin:0.0.10")
+implementation("earth.adi:typeid-kotlin:0.0.11")
 ```
 
 
@@ -207,6 +207,29 @@ The `TypeId` class can be customized to use a different prefix for the generated
 val typeId = typeId().withCustomPrefix(TypedPrefix<Organization>("org"))
 println(typeId.randomId<Organization>()) // prints something like org_01h455vb4pex5vsknk084sn02q
 ```
+
+Another possibility is to add `TypedPrefix` to the entity instance:
+
+```kotlin
+@TypeIdPrefix("cust")
+data class Customer(override val id: CustomerId)
+```
+
+This can also be useful when you want a different entity interface in a different module. For example:  
+
+```kotlin
+@TypeIdPrefix("customer")
+interface CustomerIdentifiable {
+  val id: CustomerId
+}
+
+typealias CustomerId = Id<out CustomerIdentifiable>
+
+data class Customer(override val id: CustomerId) : CustomerIdentifiable
+```
+
+If the `@TypeIdPrefix` is present TypeId will use that. 
+Note that the prefixes registered trough the `TypeId` instance will take precedence over the ones defined in the entity.
 
 
 ### Customizing the UUID generator

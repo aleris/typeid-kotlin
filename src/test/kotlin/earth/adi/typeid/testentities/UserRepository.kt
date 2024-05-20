@@ -1,4 +1,4 @@
-package earth.adi.typeid
+package earth.adi.typeid.testentities
 
 class UserRepository {
   fun get(id: UserId): User {
