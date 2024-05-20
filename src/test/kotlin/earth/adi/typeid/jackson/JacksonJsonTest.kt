@@ -1,13 +1,11 @@
-package earth.adi.typeid
+package earth.adi.typeid.jackson
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.BeanProperty
 import com.fasterxml.jackson.databind.PropertyName
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import earth.adi.typeid.jackson.IdJsonDeserializer
-import earth.adi.typeid.jackson.IdJsonSerializer
-import earth.adi.typeid.jackson.RawIdJsonSerializer
+import earth.adi.typeid.*
 import java.io.ByteArrayOutputStream
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

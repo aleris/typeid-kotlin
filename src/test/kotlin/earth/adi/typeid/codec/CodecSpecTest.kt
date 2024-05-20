@@ -1,10 +1,8 @@
-package earth.adi.typeid
+package earth.adi.typeid.codec
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
-import earth.adi.typeid.codec.Codec
-import earth.adi.typeid.codec.Decoded
 import java.util.*
 import java.util.stream.Stream
 import org.assertj.core.api.Assertions.assertThat

@@ -1,6 +1,7 @@
 package earth.adi.typeid
 
 import earth.adi.typeid.codec.Codec
+import earth.adi.typeid.serialization.UUIDKSerializer
 import java.io.Serializable
 import java.util.*
 
@@ -37,7 +38,11 @@ import java.util.*
  * @property typedPrefix the typed prefix of the identifier
  * @property uuid the uuid of the identifier
  */
-data class Id<TEntity>(val typedPrefix: TypedPrefix<out TEntity>, val uuid: UUID) : Serializable {
+@kotlinx.serialization.Serializable
+data class Id<TEntity>(
+    val typedPrefix: TypedPrefix<out TEntity>,
+    @kotlinx.serialization.Serializable(with = UUIDKSerializer::class) val uuid: UUID,
+) : Serializable {
   init {
     Codec.requireValidPrefix(typedPrefix.prefix)
   }

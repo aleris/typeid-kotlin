@@ -1,7 +1,5 @@
-package earth.adi.typeid
+package earth.adi.typeid.codec
 
-import earth.adi.typeid.codec.Codec
-import earth.adi.typeid.codec.Decoded
 import java.util.*
 import net.jqwik.api.*
 import net.jqwik.api.constraints.LowerChars

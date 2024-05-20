@@ -4,6 +4,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 plugins {
   `java-library`
   alias(libs.plugins.kotlinJvm)
+  alias(libs.plugins.kotlinSerialization)
   alias(libs.plugins.spotless)
   jacoco
   alias(libs.plugins.jmh)
@@ -14,7 +15,7 @@ plugins {
 
 group = "earth.adi"
 
-version = "0.0.9"
+version = "0.0.10"
 
 repositories { mavenCentral() }
 
@@ -22,9 +23,11 @@ dependencies {
   implementation(libs.javaUuidGenerator)
   implementation(platform(libs.jacksonBom))
   implementation(libs.bundles.jackson)
+  implementation(libs.kotlinxSerializationCore)
 
   testImplementation(platform(libs.junitBom))
   testImplementation(libs.bundles.test)
+  testImplementation(libs.kotlinxSerializationCbor)
 }
 
 kotlin { jvmToolchain(17) }
@@ -83,15 +86,43 @@ tasks.test {
 }
 
 tasks.withType<JacocoReport> {
+  afterEvaluate {
+    classDirectories.setFrom(
+        files(
+            classDirectories.files.map {
+              fileTree(it).apply {
+                exclude("**/**/*serializer*.*") // kotlinx.serialization
+              }
+            }))
+  }
+
   doLast { println("JaCoCo report: file://" + reports.html.entryPoint) }
 }
 
 tasks.jacocoTestReport { dependsOn(tasks.test) }
 
-tasks.jacocoTestCoverageVerification {
+tasks.withType<JacocoCoverageVerification> {
   dependsOn(tasks.jacocoTestReport)
 
-  violationRules { rule { limit { minimum = "1.00".toBigDecimal() } } }
+  violationRules {
+    rule { limit { minimum = "1.00".toBigDecimal() } }
+    rule {
+      limit {
+        counter = "BRANCH"
+        minimum = "1.00".toBigDecimal()
+      }
+    }
+  }
+
+  afterEvaluate {
+    classDirectories.setFrom(
+        files(
+            classDirectories.files.map {
+              fileTree(it).apply {
+                exclude("**/**/*serializer*.*") // kotlinx.serialization
+              }
+            }))
+  }
 }
 
 jmh {

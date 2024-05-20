@@ -1,7 +1,7 @@
-package earth.adi.typeid
+package earth.adi.typeid.codec
 
-import earth.adi.typeid.codec.Codec
-import earth.adi.typeid.codec.Decoded
+import earth.adi.typeid.TypeId
+import earth.adi.typeid.Validated
 import java.util.*
 import java.util.stream.Stream
 import org.assertj.core.api.Assertions.*
@@ -71,6 +71,7 @@ class CodecValidationsTest {
               "sömeprefix_01h455vb4pex5vsknk084sn02q", // prefix with 'ö'
               "someprefix_01h455öb4pex5vsknk084sn02q", // suffix with 'ö'
               "someprefix_Ă01h455b4pex5vsknk084sn02q", // suffix with 'Ă' (> ascii 255) as first
+              "someprefix_/01h455b4pex5vsknk084sn02q", // suffix with '/' (< ascii '0') as first
               // char
               "sOmeprefix_01h455vb4pex5vsknk084sn02q", // prefix with 'O'
               "someprefix_01h455Vb4pex5vsknk084sn02q", // suffix with 'V'

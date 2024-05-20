@@ -16,6 +16,10 @@ class IdJsonSerializer @JvmOverloads constructor(t: Class<Id<*>?>? = null) :
     StdSerializer<Id<*>?>(t) {
   @Throws(IOException::class, JsonProcessingException::class)
   override fun serialize(value: Id<*>?, jgen: JsonGenerator, provider: SerializerProvider?) {
-    jgen.writeString(value?.toString() ?: "")
+    if (value == null) {
+      jgen.writeNull()
+      return
+    }
+    jgen.writeString(value.toString())
   }
 }

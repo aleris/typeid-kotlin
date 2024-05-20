@@ -16,6 +16,10 @@ class RawIdJsonSerializer @JvmOverloads constructor(t: Class<RawId?>? = null) :
     StdSerializer<RawId?>(t) {
   @Throws(IOException::class, JsonProcessingException::class)
   override fun serialize(value: RawId?, jgen: JsonGenerator, provider: SerializerProvider?) {
-    jgen.writeString(value?.toString() ?: "")
+    if (value == null) {
+      jgen.writeNull()
+      return
+    }
+    jgen.writeString(value.toString())
   }
 }
