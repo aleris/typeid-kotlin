@@ -221,7 +221,26 @@ val typeId = typeId().withUUIDGenerator { Generators.randomBasedGenerator().gene
 ```
 
 
-### JSON serialization and deserialization
+### Serialization and deserialization
+
+The ids have built-in serialization and deserialization support for Java, Kotlin (kotlinx.serialization), and Jackson.
+
+
+#### Kotlin (kotlinx.serialization)
+
+Both [Id] and [RawId] have `@Serializable` and can be used with `kotlinx.serialization`.
+You need to include the actual serialization dependency in your project.
+
+For example, with CBOR:
+
+`include("io.github.microutils:kotlin-serialization-cbor:1.6.3")`
+
+```kotlin
+val bytes = Cbor.encodeToByteArray<Id<User>>(id)
+val deserialized = Cbor.decodeFromByteArray<Id<User>>(bytes)
+```
+
+#### Jackson
 
 The library provides a Jackson module to serialize and deserialize `Id` instances.
 
