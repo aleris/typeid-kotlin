@@ -1,5 +1,8 @@
 package earth.adi.typeid
 
+import java.io.ByteArrayOutputStream
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 import java.util.*
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -29,5 +32,18 @@ class IdTest {
     val uuid = UUID.fromString("00000000-0000-0000-0000-000000000000")
     val id = Id<String>(TypedPrefix("user"), uuid)
     assertThat(id.uuid).isEqualTo(uuid)
+  }
+
+  @Test
+  fun `test serialization deserialization`() {
+    val uuid = UUID.fromString("00000000-0000-0000-0000-000000000000")
+    val id = Id<String>(TypedPrefix("user"), uuid)
+    ByteArrayOutputStream().use { outputStream ->
+      ObjectOutputStream(outputStream).writeObject(id)
+      ObjectInputStream(outputStream.toByteArray().inputStream()).use {
+        @Suppress("UNCHECKED_CAST") val deserializedId = it.readObject() as Id<String>
+        assertThat(deserializedId).isEqualTo(id)
+      }
+    }
   }
 }

@@ -1,6 +1,7 @@
 package earth.adi.typeid
 
 import earth.adi.typeid.codec.Codec
+import java.io.Serializable
 import java.util.UUID
 
 /**
@@ -10,7 +11,7 @@ import java.util.UUID
  * @property prefix the prefix of the identifier
  * @property uuid the uuid of the identifier
  */
-data class RawId(val prefix: String, val uuid: UUID) {
+data class RawId(val prefix: String, val uuid: UUID) : Serializable {
   init {
     Codec.requireValidPrefix(prefix)
   }

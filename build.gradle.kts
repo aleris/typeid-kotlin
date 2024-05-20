@@ -14,7 +14,7 @@ plugins {
 
 group = "earth.adi"
 
-version = "0.0.8"
+version = "0.0.9"
 
 repositories { mavenCentral() }
 
@@ -159,6 +159,7 @@ tasks.publish { dependsOn(tasks.dokkaHtml) }
 
 jreleaser {
   project {
+    name.set(mavenArtifactId)
     description.set(mavenArtifactDescription)
     authors.set(arrayListOf("aleris"))
     license.set("Apache-2.0")
