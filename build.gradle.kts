@@ -15,7 +15,7 @@ plugins {
 
 group = "earth.adi"
 
-version = "0.0.13"
+version = "0.0.14"
 
 repositories { mavenCentral() }
 
@@ -213,6 +213,9 @@ jreleaser {
           active.set(org.jreleaser.model.Active.ALWAYS)
           url.set("https://central.sonatype.com/api/v1/publisher")
           stagingRepository(stagingDir.get().toString())
+          connectTimeout.set(120)
+          retryDelay.set(30)
+          readTimeout.set(180)
         }
       }
     }
