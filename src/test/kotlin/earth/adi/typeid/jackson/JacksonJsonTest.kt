@@ -51,7 +51,7 @@ class JacksonJsonTest {
         EntitiesWithIds(
             User(typeId.parse<User>("user_01hy0d96sgfx0rh975kqkspchh")),
             Organization(typeId.parse<Organization>("org_01hy0sk45qfmdsdme1j703yjet")),
-            Customer(typeId.parse<CustomerIdentifiable>("customer_01hyb7c8a3eyws8s8d037qfr6b")),
+            Customer(typeId.parse<CustomerIdentifiable>("cust_01hyb7c8a3eyws8s8d037qfr6b")),
         )
     val writtenJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json)
     assertThat(writtenJson).isEqualTo(JSON_ENTITIES_WITH_IDS)
@@ -70,7 +70,7 @@ class JacksonJsonTest {
     assertThat(json.organizationId)
         .isEqualTo(typeId.parse<Organization>("org_01hy0sk45qfmdsdme1j703yjet"))
     assertThat(json.customerId)
-        .isEqualTo(typeId.parse<CustomerIdentifiable>("customer_01hyb7c8a3eyws8s8d037qfr6b"))
+        .isEqualTo(typeId.parse<CustomerIdentifiable>("cust_01hyb7c8a3eyws8s8d037qfr6b"))
   }
 
   @Test
@@ -79,7 +79,7 @@ class JacksonJsonTest {
         IdsOnly(
             typeId.parse<User>("user_01hy0d96sgfx0rh975kqkspchh"),
             typeId.parse<Organization>("org_01hy0sk45qfmdsdme1j703yjet"),
-            typeId.parse<CustomerIdentifiable>("customer_01hyb7c8a3eyws8s8d037qfr6b"),
+            typeId.parse<CustomerIdentifiable>("cust_01hyb7c8a3eyws8s8d037qfr6b"),
         )
     val writtenJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json)
     assertThat(writtenJson).isEqualTo(JSON_IDS_ONLY)
@@ -96,7 +96,7 @@ class JacksonJsonTest {
     val json = objectMapper.readValue<RawIds>(JSON_IDS_ONLY)
     assertThat(json.userId).isEqualTo(typeId.parse("user_01hy0d96sgfx0rh975kqkspchh"))
     assertThat(json.organizationId).isEqualTo(typeId.parse("org_01hy0sk45qfmdsdme1j703yjet"))
-    assertThat(json.customerId).isEqualTo(typeId.parse("customer_01hyb7c8a3eyws8s8d037qfr6b"))
+    assertThat(json.customerId).isEqualTo(typeId.parse("cust_01hyb7c8a3eyws8s8d037qfr6b"))
   }
 
   @Test
@@ -105,7 +105,7 @@ class JacksonJsonTest {
         RawIds(
             typeId.parse("user_01hy0d96sgfx0rh975kqkspchh"),
             typeId.parse("org_01hy0sk45qfmdsdme1j703yjet"),
-            typeId.parse("customer_01hyb7c8a3eyws8s8d037qfr6b"),
+            typeId.parse("cust_01hyb7c8a3eyws8s8d037qfr6b"),
         )
     val writtenJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json)
     assertThat(writtenJson).isEqualTo(JSON_IDS_ONLY)
@@ -170,7 +170,7 @@ class JacksonJsonTest {
           "id" : "org_01hy0sk45qfmdsdme1j703yjet"
         },
         "customer" : {
-          "id" : "customer_01hyb7c8a3eyws8s8d037qfr6b"
+          "id" : "cust_01hyb7c8a3eyws8s8d037qfr6b"
         }
       }
       """
@@ -181,7 +181,7 @@ class JacksonJsonTest {
       {
         "user_id" : "user_01hy0d96sgfx0rh975kqkspchh",
         "org_id" : "org_01hy0sk45qfmdsdme1j703yjet",
-        "customer_id" : "customer_01hyb7c8a3eyws8s8d037qfr6b"
+        "customer_id" : "cust_01hyb7c8a3eyws8s8d037qfr6b"
       }
       """
             .trimIndent()

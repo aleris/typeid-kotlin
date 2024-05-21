@@ -3,7 +3,7 @@ package earth.adi.typeid.testentities
 import earth.adi.typeid.Id
 import earth.adi.typeid.annotations.TypeIdPrefix
 
-@TypeIdPrefix("customer")
+@TypeIdPrefix("cust")
 interface CustomerIdentifiable {
   val id: CustomerId
 }

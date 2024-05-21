@@ -182,10 +182,15 @@ class Factory {
   }
 
   private fun <TEntity> defaultPrefix(entityType: Class<out TEntity>): TypedPrefix<out TEntity> {
-    entityType.annotations
-        .find { it is TypeIdPrefix }
+    entityType.getAnnotation(TypeIdPrefix::class.java)?.let {
+      val typeIdPrefix = it.value
+      Codec.requireValidPrefix(typeIdPrefix)
+      return TypedPrefix(typeIdPrefix)
+    }
+    entityType.interfaces
+        .find { it.isAnnotationPresent(TypeIdPrefix::class.java) }
         ?.let {
-          val typeIdPrefix = (it as TypeIdPrefix).value
+          val typeIdPrefix = it.getAnnotation(TypeIdPrefix::class.java).value
           Codec.requireValidPrefix(typeIdPrefix)
           return TypedPrefix(typeIdPrefix)
         }

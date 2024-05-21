@@ -1,9 +1,6 @@
 package earth.adi.typeid
 
-import earth.adi.typeid.testentities.CustomerIdentifiable
-import earth.adi.typeid.testentities.Organization
-import earth.adi.typeid.testentities.User
-import earth.adi.typeid.testentities.UserRepository
+import earth.adi.typeid.testentities.*
 import java.util.*
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -136,7 +133,23 @@ class TypeIdTest {
   @Test
   fun `randomId with prefix customization in annotation`() {
     val customerId = typeId.randomId<CustomerIdentifiable>() // customer_01hy0sk45qfmdsdme1j703yjet
-    assertThat(customerId.toString()).startsWith("customer_")
+    assertThat(customerId.toString()).startsWith("cust_")
+  }
+
+  @Test
+  fun `randomId with prefix customization in annotation from interface`() {
+    val customerId = typeId.randomId<Customer>() // customer_01hy0sk45qfmdsdme1j703yjet
+    assertThat(customerId.toString()).startsWith("cust_")
+  }
+
+  interface EntityIdentifiable
+
+  data class Entity(val id: Id<Entity>) : EntityIdentifiable
+
+  @Test
+  fun `for class with interface without interface`() {
+    val customerId = typeId.randomId<Entity>()
+    assertThat(customerId.toString()).startsWith("entity_")
   }
 
   @Test

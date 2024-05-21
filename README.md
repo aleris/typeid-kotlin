@@ -218,7 +218,7 @@ data class Customer(override val id: CustomerId)
 This can also be useful when you want a different entity interface in a different module. For example:  
 
 ```kotlin
-@TypeIdPrefix("customer")
+@TypeIdPrefix("cust")
 interface CustomerIdentifiable {
   val id: CustomerId
 }
@@ -228,8 +228,9 @@ typealias CustomerId = Id<out CustomerIdentifiable>
 data class Customer(override val id: CustomerId) : CustomerIdentifiable
 ```
 
-If the `@TypeIdPrefix` is present TypeId will use that. 
-Note that the prefixes registered trough the `TypeId` instance will take precedence over the ones defined in the entity.
+If the `@TypeIdPrefix` is present (on the entity or one of the interfaces) TypeId will use that. 
+Note that the prefixes registered through the `TypeId` instance will take precedence 
+over the ones defined in the entity.
 
 
 ### Customizing the UUID generator
