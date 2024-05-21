@@ -8,8 +8,14 @@ import org.junit.jupiter.api.Test
 
 class TypeIdTest {
   @Test
-  fun `default randomId`() {
+  fun `default randomId with inference of entity`() {
     val userId = TypeId.randomId<User>() // user_01hy0d96sgfx0rh975kqkspchh
+    assertThat(userId.toString()).startsWith("user_")
+  }
+
+  @Test
+  fun `default randomId with inference of id`() {
+    val userId: UserId = TypeId.randomId() // user_01hy0d96sgfx0rh975kqkspchh
     assertThat(userId.toString()).startsWith("user_")
   }
 

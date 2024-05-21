@@ -1,6 +1,6 @@
 # typeid-kotlin
 ![Build Status](https://github.com/aleris/typeid-kotlin/actions/workflows/build-on-push.yml/badge.svg)
-![Current Version](https://img.shields.io/badge/Version-0.0.11-blue)
+![Current Version](https://img.shields.io/badge/Version-0.0.13-blue)
 
 
 ## A Kotlin implementation of [TypeID](https://github.com/jetpack-io/typeid).
@@ -25,14 +25,14 @@ To use with Maven:
 <dependency>
     <groupId>earth.adi</groupId>
     <artifactId>typeid-kotlin</artifactId>
-    <version>0.0.11</version>
+    <version>0.0.13</version>
 </dependency>
 ```
 
 To use via Gradle:
 
 ```kotlin
-implementation("earth.adi:typeid-kotlin:0.0.11")
+implementation("earth.adi:typeid-kotlin:0.0.13")
 ```
 
 
@@ -64,10 +64,23 @@ To generate a new `Id`, based on UUIDv7 as per specification:
 // create a reusable TypeId instance, can be stored in a DI container
 val typeId = typeId()
 
-val userId = typeId.randomId<User>()
+val userId: UserId = typeId.randomId()
 println(userId) // prints something like user_01h455vb4pex5vsknk084sn02q
 println(typeId.typedPrefix.prefix) // "user"
 println(typeId.uuid) // java.util.UUID(01890a5d-ac96-774b-bcce-b302099a8057)
+```
+
+Generating a random id for a specific entity type also works:
+
+```kotlin
+val userId = typeId.randomId<User>()
+```
+
+If the type of the id can be inferred, it will also work seamlessly:
+
+```kotlin
+data class User(val id: UserId)
+val user = User(typeId.randomId()) // infers UserId
 ```
 
 Alternatively, if you do not want to customize prefixes (see below), directly use the static methods in `TypeId`:
