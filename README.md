@@ -56,6 +56,7 @@ typealias UserId = Id<out User>
 
 ```
 
+
 #### randomId
 
 To generate a new `Id`, based on UUIDv7 as per specification:
@@ -76,6 +77,12 @@ Generating a random id for a specific entity type also works:
 val userId = typeId.randomId<User>()
 ```
 
+Or specify the type explicitly, which can also be used from Java code:
+
+```kotlin
+val userId = typeId.randomId(User::class.java)
+```
+
 If the type of the id can be inferred, it will also work seamlessly:
 
 ```kotlin
@@ -83,20 +90,20 @@ data class User(val id: UserId)
 val user = User(typeId.randomId()) // infers UserId
 ```
 
-Alternatively, if you do not want to customize prefixes (see below), directly use the static methods in `TypeId`:
+Alternatively, directly use the static methods in `TypeId`:
     
 ```kotlin
-val userId = TypeId.randomId<User>()
+val userId: UserId = TypeId.randomId()
 ```
 
-Not using a specific entity type, but an explicit prefix will instead generate a `RawId`:
+Using an explicit string prefix will instead generate a `RawId`:
 
 ```kotlin
-val rawId = typeId.randomId("custom")
+val rawId: RawId = typeId.randomId("custom")
 println(rawId) // prints something like custom_01h455vb4pex5vsknk084sn02q
 ```
 
-Raw ids are just a string with a prefix and a UUID, without any type information, 
+Raw ids are just a string with a prefix and a UUID, without any Java/Kotlin type information, 
 so it is better to use typed ids whenever possible (see [Type safety](#type-safety) below).
 
 All methods described below also have raw variants.
@@ -107,8 +114,14 @@ All methods described below also have raw variants.
 To construct (or reconstruct) an `Id` from an `UUID`:
 
 ```kotlin
-val userId = typeId.of<User>(someUUID)
+val userId: UserId = typeId.of(someUUID)
 ```
+
+or for a `RawId`:
+```kotlin
+val userId: RawId = TypeId.of("user", someUUID)
+```
+
 
 ### Parsing from strings
 
@@ -121,11 +134,19 @@ The most straightforward way to parse the textual representation of an id:
 
 
 ```kotlin
-val userId = typeId.parse<User>("user_01h455vb4pex5vsknk084sn02q")
+val userId: UserId = typeId.parse("user_01h455vb4pex5vsknk084sn02q")
 
 ```
 
 Invalid inputs will result in an `IllegalArgumentException`, with a message explaining the cause of the parsing failure.
+
+To parse a `RawId`:
+
+```kotlin
+val rawId: RawId = TypeId.parse("custom_01h455vb4pex5vsknk084sn02q")
+```
+
+Will create a `RawId` instance with the prefix 'custom'.
 
 
 #### parseToValidated
@@ -136,15 +157,15 @@ as no stacktrace is involved):
 
 
 ```kotlin
-val validated = typeId.parseToValidated<User>("user_01h455vb4pex5vsknk084sn02q")
+val userId: UserId = typeId.parseToValidated("user_01h455vb4pex5vsknk084sn02q")
 
-when(validated) {
+when(userId) {
     is Validated.Valid -> {
-        val userId = validated.id
+        val userId = userId.id
         // Proceed with userId
     }
     is Validated.Invalid -> {
-        val error = validated.error
+        val error = userId.error
         // Optionally, do something with the error message
     }
 }
@@ -155,8 +176,9 @@ The `Validated` class includes a couple of functional style helper methods like 
 Example:
 
 ```kotlin
-val validated = typeId.parseToValidated<User>("user_01h455vb4pex5vsknk084sn02q")
-validated.filter { it.id == idFromSomewhereElse }
+typeId
+  .parseToValidated<User>("user_01h455vb4pex5vsknk084sn02q")
+  .filter { it.id == idFromSomewhereElse }
   .map { it.id }
   .ifValid { println("Valid id: $it") }
 ```
@@ -179,14 +201,14 @@ These approaches are much faster when the input is untrusted and can result in l
 
 ### Type safety
 
-At its base, a `typeid` is just a prefix followed by _ and an encoded UUID 
-(see the [spec](https://github.com/jetify-com/typeid/tree/main/spec)). 
+At its base, a `typeid` is just a prefix followed by `_` and an encoded UUID 
+(see the [spec](https://github.com/jetify-com/typeid/tree/main/spec)).
 After it is encoded is just a string.
 
 This could result in bugs if you accidentally mix up ids from different entities.
 
 ```kotlin
-val id = typeId().randomId("user")
+val id: RawId = typeId.randomId("user")
 
 // ... sometime later
 val orgExists = someService.checkIfOrganizationExists(id)
@@ -198,12 +220,12 @@ The library provides a type-safe way to work with these ids, by associating them
 1. Fail if unexpected prefix is used
 ```kotlin
 // fails if id does not have a `user` prefix
-val userId = typeId().parse<User>(id) 
+val userId: UserId = typeId.parse(id) 
 ```
 
 2. Compile time safety
 ```kotlin
-val id = typeId().parse<User>(text)
+val id: UserId = typeId.parse(text)
 
 // ... sometime later
 val orgExists = someService.checkIfOrganizationExists(id)
@@ -214,21 +236,25 @@ val orgExists = someService.checkIfOrganizationExists(id)
 
 ### Customizing prefixes
 
-The `TypeId` class can be customized to use a different prefix for the generated ids.
+The `TypeId` class can be customized to use a specific prefix for the generated ids 
+associated with an entity type.
 
+For example to register a custom prefix for the `Organization` entity:
 ```kotlin
 val typeId = typeId().withCustomPrefix(TypedPrefix<Organization>("org"))
 println(typeId.randomId<Organization>()) // prints something like org_01h455vb4pex5vsknk084sn02q
 ```
 
-Another possibility is to add `TypedPrefix` to the entity instance:
+Another possibility is to add the `TypedPrefix` annotation to the entity instance:
 
 ```kotlin
 @TypeIdPrefix("cust")
 data class Customer(override val id: CustomerId)
 ```
 
-This can also be useful when you want a different entity interface in a different module. For example:  
+This can also be useful when you want a different entity interface (maybe defined in a different module). 
+For example, define an interface with the `@TypeIdPrefix` annotation,
+which is implemented by the entity class:  
 
 ```kotlin
 @TypeIdPrefix("cust")
@@ -241,14 +267,15 @@ typealias CustomerId = Id<out CustomerIdentifiable>
 data class Customer(override val id: CustomerId) : CustomerIdentifiable
 ```
 
-If the `@TypeIdPrefix` is present (on the entity or one of the interfaces) TypeId will use that. 
+If the `@TypeIdPrefix` is present (on the entity or one of its interfaces) TypeId will use that. 
 Note that the prefixes registered through the `TypeId` instance will take precedence 
-over the ones defined in the entity.
+over the ones defined with annotations, you should use just one of the two methods to define prefixes.
 
 
 ### Customizing the UUID generator
 
-By default, the library uses the `UUIDv7` generator, but you can provide your own generator.
+By default, the library uses the `UUIDv7` generator, as per typeid specification,
+but you can provide your own generator.
 
 ```kotlin
 // use Java UUID random generator
@@ -260,7 +287,8 @@ val typeId = typeId().withUUIDGenerator { Generators.randomBasedGenerator().gene
 
 ### Serialization and deserialization
 
-The ids have built-in serialization and deserialization support for Java, Kotlin (kotlinx.serialization), and Jackson.
+The ids in this library have built-in serialization and deserialization support
+for Java, Kotlin (kotlinx.serialization), and Jackson.
 
 
 #### Kotlin (kotlinx.serialization)
@@ -276,6 +304,7 @@ For example, with CBOR:
 val bytes = Cbor.encodeToByteArray<Id<User>>(id)
 val deserialized = Cbor.decodeFromByteArray<Id<User>>(bytes)
 ```
+
 
 #### Jackson
 
@@ -308,6 +337,12 @@ val writtenJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsStri
 val read = objectMapper.readValue<JsonUserAndOrganization>(writtenJson)
 // read.user.id is same as typeId.parse<User>("user_01hy0d96sgfx0rh975kqkspchh")
 ```
+
+
+## Using it with Spring
+
+See [Spring Snippets](https://github.com/aleris/typeid-kotlin/wiki/Using-kotlin-TypeId-type‐safe-ids-with-Spring) 
+for examples on how to use `TypeId` with Spring Data and WebMvc by creating converters and formatters.
 
 
 ## Building From Source
