@@ -214,7 +214,7 @@ jreleaser {
           url.set("https://central.sonatype.com/api/v1/publisher")
           stagingRepository(stagingDir.get().toString())
           connectTimeout.set(120)
-          retryDelay.set(30)
+          retryDelay.set(60)
           readTimeout.set(180)
         }
       }
