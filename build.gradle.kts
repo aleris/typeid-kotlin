@@ -15,7 +15,7 @@ plugins {
 
 group = "earth.adi"
 
-version = "0.0.16"
+version = "1.0.0"
 
 repositories { mavenCentral() }
 

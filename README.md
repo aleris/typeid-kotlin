@@ -1,6 +1,6 @@
 # typeid-kotlin
 ![Build Status](https://github.com/aleris/typeid-kotlin/actions/workflows/build-on-push.yml/badge.svg)
-![Current Version](https://img.shields.io/badge/Version-0.0.16-blue)
+![Current Version](https://img.shields.io/badge/Version-1.0.0-blue)
 
 
 ## A Kotlin implementation of [TypeID](https://github.com/jetpack-io/typeid).
@@ -25,14 +25,14 @@ To use with Maven:
 <dependency>
     <groupId>earth.adi</groupId>
     <artifactId>typeid-kotlin</artifactId>
-    <version>0.0.16</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
 To use via Gradle:
 
 ```kotlin
-implementation("earth.adi:typeid-kotlin:0.0.16")
+implementation("earth.adi:typeid-kotlin:1.0.0")
 ```
 
 
