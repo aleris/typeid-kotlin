@@ -70,6 +70,8 @@ $dokka.location:earth.adi.typeid/RawId/uuid/#/PointingToDeclaration/typeid-kotl
 $dokka.location:earth.adi.typeid/TypeId.Companion///PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-type-id/-companion/index.html
 $dokka.location:earth.adi.typeid/TypeId.Companion/DEFAULT/#/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-type-id/-companion/-d-e-f-a-u-l-t.html
 $dokka.location:earth.adi.typeid/TypeId.Companion/DEFAULT_UUID_GENERATOR/#/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-type-id/-companion/-d-e-f-a-u-l-t_-u-u-i-d_-g-e-n-e-r-a-t-o-r.html
+$dokka.location:earth.adi.typeid/TypeId.Companion/isId/#java.lang.Class[TypeParam(bounds=[kotlin.Any?])]#kotlin.String/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-type-id/-companion/is-id.html
+$dokka.location:earth.adi.typeid/TypeId.Companion/isId/#kotlin.String/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-type-id/-companion/is-id.html
 $dokka.location:earth.adi.typeid/TypeId.Companion/jacksonModule/#/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-type-id/-companion/jackson-module.html
 $dokka.location:earth.adi.typeid/TypeId.Companion/of/#java.lang.Class[TypeParam(bounds=[kotlin.Any?])]#java.util.UUID/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-type-id/-companion/of.html
 $dokka.location:earth.adi.typeid/TypeId.Companion/of/#java.util.UUID/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-type-id/-companion/of.html
@@ -85,6 +87,8 @@ $dokka.location:earth.adi.typeid/TypeId.Companion/randomId/#kotlin.String/Pointi
 $dokka.location:earth.adi.typeid/TypeId///PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-type-id/index.html
 $dokka.location:earth.adi.typeid/TypeId/TypeId/#java.util.function.Supplier[java.util.UUID]/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-type-id/-type-id.html
 $dokka.location:earth.adi.typeid/TypeId/factory/#/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-type-id/factory.html
+$dokka.location:earth.adi.typeid/TypeId/isId/#java.lang.Class[TypeParam(bounds=[kotlin.Any?])]#kotlin.String/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-type-id/is-id.html
+$dokka.location:earth.adi.typeid/TypeId/isId/#kotlin.String/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-type-id/is-id.html
 $dokka.location:earth.adi.typeid/TypeId/jacksonModule/#/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-type-id/jackson-module.html
 $dokka.location:earth.adi.typeid/TypeId/of/#java.lang.Class[TypeParam(bounds=[kotlin.Any?])]#java.util.UUID/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-type-id/of.html
 $dokka.location:earth.adi.typeid/TypeId/of/#java.util.UUID/PointingToDeclaration/typeid-kotlin/earth.adi.typeid/-type-id/of.html
