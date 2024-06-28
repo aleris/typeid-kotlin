@@ -17,7 +17,7 @@ import java.util.*
  * typealias UserId = Id<out User>
  *
  * // Then, to create a random user id:
- * val userId = TypeId.randomId<User>()
+ * val userId = TypeId.generate<User>()
  * println(userId) // prints something like user_01hy0cmx53fe8tr2dy37d42avj
  *
  * // To try parse a user id from a string

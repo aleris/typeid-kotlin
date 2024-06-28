@@ -6,8 +6,8 @@ import org.openjdk.jmh.infra.Blackhole
 
 open class TypeIdBenchmark {
   @Benchmark
-  fun randomId(bh: Blackhole) {
-    bh.consume(TypeId.randomId<User>())
+  fun generate(bh: Blackhole) {
+    bh.consume(TypeId.generate<User>())
   }
 
   @Benchmark
@@ -21,8 +21,8 @@ open class TypeIdBenchmark {
   }
 
   @Benchmark
-  fun randomIdAndToString(bh: Blackhole, inputs: Inputs) {
-    val id = inputs.typeId.randomId<User>()
+  fun generateAndToString(bh: Blackhole, inputs: Inputs) {
+    val id = inputs.typeId.generate<User>()
     bh.consume(id.toString())
   }
 
@@ -47,6 +47,20 @@ open class TypeIdBenchmark {
   }
 
   @Benchmark
+  fun parseRawSuccess(bh: Blackhole, inputs: Inputs) {
+    bh.consume(inputs.typeId.parse(inputs.validIdText))
+  }
+
+  @Benchmark
+  fun parseRawError(bh: Blackhole, inputs: Inputs) {
+    try {
+      inputs.typeId.parse(inputs.invalidIdText)
+    } catch (e: Exception) {
+      bh.consume(e)
+    }
+  }
+
+  @Benchmark
   fun parseToValidatedSuccess(bh: Blackhole, inputs: Inputs) {
     bh.consume(inputs.typeId.parseToValidated<User>(inputs.validIdText))
   }
@@ -54,6 +68,16 @@ open class TypeIdBenchmark {
   @Benchmark
   fun parseToValidatedError(bh: Blackhole, inputs: Inputs) {
     bh.consume(inputs.typeId.parseToValidated<User>(inputs.invalidIdText))
+  }
+
+  @Benchmark
+  fun parseToValidatedRawSuccess(bh: Blackhole, inputs: Inputs) {
+    bh.consume(inputs.typeId.parseToValidatedRaw(inputs.validIdText))
+  }
+
+  @Benchmark
+  fun parseToValidatedRawError(bh: Blackhole, inputs: Inputs) {
+    bh.consume(inputs.typeId.parseToValidatedRaw(inputs.invalidIdText))
   }
 
   @State(Scope.Benchmark)

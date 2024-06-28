@@ -1,6 +1,6 @@
 # typeid-kotlin
 ![Build Status](https://github.com/aleris/typeid-kotlin/actions/workflows/build-on-push.yml/badge.svg)
-![Current Version](https://img.shields.io/badge/Version-0.0.15-blue)
+![Current Version](https://img.shields.io/badge/Version-0.0.16-blue)
 
 
 ## A Kotlin implementation of [TypeID](https://github.com/jetpack-io/typeid).
@@ -25,14 +25,14 @@ To use with Maven:
 <dependency>
     <groupId>earth.adi</groupId>
     <artifactId>typeid-kotlin</artifactId>
-    <version>0.0.15</version>
+    <version>0.0.16</version>
 </dependency>
 ```
 
 To use via Gradle:
 
 ```kotlin
-implementation("earth.adi:typeid-kotlin:0.0.15")
+implementation("earth.adi:typeid-kotlin:0.0.16")
 ```
 
 
@@ -57,7 +57,7 @@ typealias UserId = Id<out User>
 ```
 
 
-#### randomId
+#### generate
 
 To generate a new `Id`, based on UUIDv7 as per specification:
 
@@ -65,41 +65,44 @@ To generate a new `Id`, based on UUIDv7 as per specification:
 // create a reusable TypeId instance, can be stored in a DI container
 val typeId = typeId()
 
-val userId: UserId = typeId.randomId()
+val userId: UserId = typeId.generate()
 println(userId) // prints something like user_01h455vb4pex5vsknk084sn02q
 println(typeId.typedPrefix.prefix) // "user"
 println(typeId.uuid) // java.util.UUID(01890a5d-ac96-774b-bcce-b302099a8057)
 ```
 
-Generating a random id for a specific entity type also works:
+This is inferring the Java type of the typeid to `UserId`.
+
+Alternatively, specifying the entity type, for example for `User`,
+will also generate the associated id `UserId`:
 
 ```kotlin
-val userId = typeId.randomId<User>()
+val userId = typeId.generate<User>()
 ```
 
-Or specify the type explicitly, which can also be used from Java code:
+Or specify the type explicitly, which can also be used from Java code as it does not rely on Kotlin type inference:
 
 ```kotlin
-val userId = typeId.randomId(User::class.java)
+val userId = typeId.generate(User::class.java)
 ```
 
 If the type of the id can be inferred, it will also work seamlessly:
 
 ```kotlin
 data class User(val id: UserId)
-val user = User(typeId.randomId()) // infers UserId
+val user = User(typeId.generate()) // infers UserId
 ```
 
 Alternatively, directly use the static methods in `TypeId`:
     
 ```kotlin
-val userId: UserId = TypeId.randomId()
+val userId: UserId = TypeId.generate()
 ```
 
 Using an explicit string prefix will instead generate a `RawId`:
 
 ```kotlin
-val rawId: RawId = typeId.randomId("custom")
+val rawId: RawId = typeId.generate("custom")
 println(rawId) // prints something like custom_01h455vb4pex5vsknk084sn02q
 ```
 
@@ -221,7 +224,7 @@ After it is encoded is just a string.
 This could result in bugs if you accidentally mix up ids from different entities.
 
 ```kotlin
-val id: RawId = typeId.randomId("user")
+val id: RawId = typeId.generate("user")
 
 // ... sometime later
 val orgExists = someService.checkIfOrganizationExists(id)
@@ -255,7 +258,7 @@ associated with an entity type.
 For example to register a custom prefix for the `Organization` entity:
 ```kotlin
 val typeId = typeId().withCustomPrefix(TypedPrefix<Organization>("org"))
-println(typeId.randomId<Organization>()) // prints something like org_01h455vb4pex5vsknk084sn02q
+println(typeId.generate<Organization>()) // prints something like org_01h455vb4pex5vsknk084sn02q
 ```
 
 Another possibility is to add the `TypedPrefix` annotation to the entity instance:
@@ -397,18 +400,24 @@ There is a small [JMH](https://github.com/openjdk/jmh) microbenchmark included:
 ```
 
 In a single-threaded run, all operations perform in the range of millions of calls per second,
-which should be enough for most use cases (used setup: Eclipse Temurin 17 JDK, 2021 MacBook Pro).
+which should be enough for most use cases 
+(used setup: Eclipse Temurin 17 JDK, 2021 MacBook Pro, run on version 0.0.16).
 
-| Benchmark                           | Mode  | Cnt |          Score |           Error | Units |
-|-------------------------------------|-------|----:|---------------:|----------------:|-------|
-| `TypeId.of`                         | thrpt |   4 | 19.517.016,660 |  ±  697.279,162 | ops/s |
-| `TypeId.of` + `toString`            | thrpt |   4 |  5.929.486,771 |  ±  696.977,896 | ops/s |
-| `TypeId.parse` (Error)              | thrpt |   4 |    786.626,228 |  ±  258.964,881 | ops/s |
-| `TypeId.parse` (Success)            | thrpt |   4 |  9.039.244,704 | ± 1.697.354,215 | ops/s |
-| `TypeId.parseToValidated` (Error)   | thrpt |   4 | 19.665.449,579 | ± 3.682.665,039 | ops/s |
-| `TypeId.parseToValidated` (Success) | thrpt |   4 |  8.737.722,345 |  ±  303.399,494 | ops/s |
-| `TypeId.randomId`                   | thrpt |   4 |  2.759.591,306 |  ±  507.771,074 | ops/s |
-| `TypeId.randomId` + `toString`      | thrpt |   4 |  2.103.888,015 |  ±   74.446,935 | ops/s |
-| `TypeId.toString`                   | thrpt |   4 |  9.631.430,676 |  ±  934.174,210 | ops/s |
+
+| Benchmark                       | Mode  | Cnt |          Score |            Error | Units |
+|---------------------------------|-------|----:|---------------:|-----------------:|-------|
+| `generate`                      | thrpt |   4 |  2.785.895,675 |  ±   791.836,864 | ops/s |
+| `generate` + `toString`         | thrpt |   4 |  2.060.627,959 | ±  1.185.777,089 | ops/s |
+| `of`                            | thrpt |   4 | 20.084.528,045 | ± 3.3543.123,085 | ops/s |
+| `of` + `toString`               | thrpt |   4 |  5.853.485,485 |  ±  1262.620,609 | ops/s |
+| `parse` (Error)                 | thrpt |   4 |    862.446,936 |  ±    63.583,514 | ops/s |
+| `parse`  (Success)              | thrpt |   4 |  9.335.663,639 |  ±   733.015,389 | ops/s |
+| `parseRaw` (Error)              | thrpt |   4 |    841.795,541 |  ±   143.272,942 | ops/s |
+| `parseRaw` (Success)            | thrpt |   4 | 13.555.610,086 | ±  5.390.579,926 | ops/s |
+| `parseToValidated` (Error)      | thrpt |   4 | 20.242.071,304 | ±  2.514.786,867 | ops/s |
+| `parseToValidated` (Success)    | thrpt |   4 |  7.145.891,307 | ±  8.080.357,687 | ops/s |
+| `parseToValidatedRaw` (Error)   | thrpt |   4 | 39.712.927,570 | ±  8.692.614,496 | ops/s |
+| `parseToValidatedRaw` (Success) | thrpt |   4 | 12.377.605,683 | ±  4.873.224,352 | ops/s |
+| `toString`                      | thrpt |   4 |  9.783.700,478 | ±  2.152.238,948 | ops/s |
 
 </details>

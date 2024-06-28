@@ -7,11 +7,11 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class ValidatedTest {
-  private val id = TypeId.randomId<User>()
+  private val id = TypeId.generate<User>()
   private val valid = Validated.Valid(id)
   private val errorMessage = "err"
   private val invalid = Validated.Invalid<UserId>(errorMessage)
-  private val otherId = TypeId.randomId<User>()
+  private val otherId = TypeId.generate<User>()
 
   @Test
   fun `test valid`() {

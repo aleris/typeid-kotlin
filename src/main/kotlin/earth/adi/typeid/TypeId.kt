@@ -20,10 +20,10 @@ import java.util.function.Supplier
  *   // Optionally register a custom prefix for a specific entity type
  *   .withCustomPrefix(TypedPrefix<Organization>("org"))
  *
- * val userId = typeId.randomId<User>()
+ * val userId = typeId.generate<User>()
  * println(userId) // prints something like user_01hy0cmx53fe8tr2dy37d42avj
  *
- * val organizationId = typeId.randomId<Organization>()
+ * val organizationId = typeId.generate<Organization>()
  * println(organizationId) // prints something like org_01hy0cmx53fe8tr2dy37d42avj
  *
  * val parsedUserId = typeId.parse<User>("user_01hy0cmx53fe8tr2dy37d42avj") // throws an exception if the id is invalid
@@ -34,7 +34,7 @@ import java.util.function.Supplier
  *
  * Usage:
  * ```
- * val userId = TypeId.randomId<User>()
+ * val userId = TypeId.generate<User>()
  * ```
  */
 class TypeId(private var uuidGenerator: Supplier<UUID>) {
@@ -56,8 +56,8 @@ class TypeId(private var uuidGenerator: Supplier<UUID>) {
    * @param TEntity the entity type
    * @return the new [Id]
    */
-  inline fun <reified TEntity> randomId(): Id<out TEntity> {
-    return randomId(TEntity::class.java)
+  inline fun <reified TEntity> generate(): Id<out TEntity> {
+    return generate(TEntity::class.java)
   }
 
   /**
@@ -75,7 +75,7 @@ class TypeId(private var uuidGenerator: Supplier<UUID>) {
    * @param entityType the inferred entity type class
    * @return the new [Id]
    */
-  fun <TEntity> randomId(entityType: Class<out TEntity>): Id<out TEntity> {
+  fun <TEntity> generate(entityType: Class<out TEntity>): Id<out TEntity> {
     return factory.create(entityType, uuidGenerator.get())
   }
 
@@ -88,7 +88,7 @@ class TypeId(private var uuidGenerator: Supplier<UUID>) {
    * @param prefix the prefix of the identifier
    * @return the new [RawId]
    */
-  fun randomId(prefix: String): RawId {
+  fun generate(prefix: String): RawId {
     return RawId(prefix, uuidGenerator.get())
   }
 
@@ -329,8 +329,8 @@ class TypeId(private var uuidGenerator: Supplier<UUID>) {
      * @param TEntity the entity type
      * @return the new [Id]
      */
-    inline fun <reified TEntity> randomId(): Id<out TEntity> {
-      return DEFAULT.randomId()
+    inline fun <reified TEntity> generate(): Id<out TEntity> {
+      return DEFAULT.generate()
     }
 
     /**
@@ -347,8 +347,8 @@ class TypeId(private var uuidGenerator: Supplier<UUID>) {
      * @param entityType the inferred entity type class
      * @return the new [Id]
      */
-    fun <TEntity> randomId(entityType: Class<out TEntity>): Id<out TEntity> {
-      return DEFAULT.randomId(entityType)
+    fun <TEntity> generate(entityType: Class<out TEntity>): Id<out TEntity> {
+      return DEFAULT.generate(entityType)
     }
 
     /**
@@ -359,8 +359,8 @@ class TypeId(private var uuidGenerator: Supplier<UUID>) {
      * @param prefix the prefix of the identifier
      * @return the new [RawId]
      */
-    fun randomId(prefix: String): RawId {
-      return DEFAULT.randomId(prefix)
+    fun generate(prefix: String): RawId {
+      return DEFAULT.generate(prefix)
     }
 
     /**

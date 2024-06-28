@@ -8,26 +8,26 @@ import org.junit.jupiter.api.Test
 
 class TypeIdTest {
   @Test
-  fun `default randomId with inference of entity`() {
-    val userId = TypeId.randomId<User>() // user_01hy0d96sgfx0rh975kqkspchh
+  fun `default generate with inference of entity`() {
+    val userId = TypeId.generate<User>() // user_01hy0d96sgfx0rh975kqkspchh
     assertThat(userId.toString()).startsWith("user_")
   }
 
   @Test
-  fun `default randomId with inference of id`() {
-    val userId: UserId = TypeId.randomId() // user_01hy0d96sgfx0rh975kqkspchh
+  fun `default generate with inference of id`() {
+    val userId: UserId = TypeId.generate() // user_01hy0d96sgfx0rh975kqkspchh
     assertThat(userId.toString()).startsWith("user_")
   }
 
   @Test
-  fun `default randomId with entity type`() {
-    val userId = TypeId.randomId(User::class.java)
+  fun `default generate with entity type`() {
+    val userId = TypeId.generate(User::class.java)
     assertThat(userId.toString()).startsWith("user_")
   }
 
   @Test
-  fun `default randomId raw`() {
-    val userId = TypeId.randomId("user")
+  fun `default generate raw`() {
+    val userId = TypeId.generate("user")
     assertThat(userId.toString()).startsWith("user_")
   }
 
@@ -52,7 +52,7 @@ class TypeIdTest {
 
   @Test
   fun `default parse valid`() {
-    val userId = TypeId.randomId<User>()
+    val userId = TypeId.generate<User>()
     val parsedUserId = TypeId.parse<User>(userId.toString())
     assertThat(parsedUserId).isEqualTo(userId)
   }
@@ -65,14 +65,14 @@ class TypeIdTest {
 
   @Test
   fun `default parse with entity type`() {
-    val userId = TypeId.randomId<User>()
+    val userId = TypeId.generate<User>()
     val parsedUserId = TypeId.parse(User::class.java, userId.toString())
     assertThat(parsedUserId).isEqualTo(userId)
   }
 
   @Test
   fun `default parse raw valid`() {
-    val userId = TypeId.randomId("user")
+    val userId = TypeId.generate("user")
     val parsedUserId = TypeId.parse(userId.toString())
     assertThat(parsedUserId).isEqualTo(userId)
   }
@@ -84,7 +84,7 @@ class TypeIdTest {
 
   @Test
   fun `default parseToValidated valid`() {
-    val userId = TypeId.randomId<User>()
+    val userId = TypeId.generate<User>()
     val parsedUserId = TypeId.parseToValidated<User>(userId.toString())
     assertThat(parsedUserId).isEqualTo(Validated.Valid(userId))
   }
@@ -100,32 +100,32 @@ class TypeIdTest {
 
   @Test
   fun `default isId true`() {
-    val organizationId = TypeId.randomId<Organization>()
+    val organizationId = TypeId.generate<Organization>()
     assertThat(TypeId.isId<Organization>(organizationId.toString())).isTrue()
   }
 
   @Test
   fun `default isId true with entity type`() {
-    val organizationId = TypeId.randomId<Organization>()
+    val organizationId = TypeId.generate<Organization>()
     assertThat(TypeId.isId(Organization::class.java, organizationId.toString())).isTrue()
   }
 
   @Test
   fun `default isId false`() {
-    val organizationId = TypeId.randomId<Organization>()
+    val organizationId = TypeId.generate<Organization>()
     assertThat(TypeId.isId<User>(organizationId.toString())).isFalse()
   }
 
   @Test
   fun `default parseToValidated with entity type`() {
-    val userId = TypeId.randomId<User>()
+    val userId = TypeId.generate<User>()
     val parsedUserId = TypeId.parseToValidated(User::class.java, userId.toString())
     assertThat(parsedUserId).isEqualTo(Validated.Valid(userId))
   }
 
   @Test
   fun `default parseToValidatedRaw valid`() {
-    val userId = TypeId.randomId("user")
+    val userId = TypeId.generate("user")
     val parsedUserId = TypeId.parseToValidatedRaw(userId.toString())
     assertThat(parsedUserId).isEqualTo(Validated.Valid(userId))
   }
@@ -143,26 +143,26 @@ class TypeIdTest {
   private val typeId = typeId().withCustomPrefix(TypedPrefix<Organization>("org"))
 
   @Test
-  fun `randomId with default prefix`() {
-    val userId = typeId.randomId<User>()
+  fun `generate with default prefix`() {
+    val userId = typeId.generate<User>()
     assertThat(userId.toString()).startsWith("user_")
   }
 
   @Test
-  fun `randomId with prefix customization`() {
-    val organizationId = typeId.randomId<Organization>() // org_01hy0sk45qfmdsdme1j703yjet
+  fun `generate with prefix customization`() {
+    val organizationId = typeId.generate<Organization>() // org_01hy0sk45qfmdsdme1j703yjet
     assertThat(organizationId.toString()).startsWith("org_")
   }
 
   @Test
-  fun `randomId with prefix customization in annotation`() {
-    val customerId = typeId.randomId<CustomerIdentifiable>() // customer_01hy0sk45qfmdsdme1j703yjet
+  fun `generate with prefix customization in annotation`() {
+    val customerId = typeId.generate<CustomerIdentifiable>() // customer_01hy0sk45qfmdsdme1j703yjet
     assertThat(customerId.toString()).startsWith("cust_")
   }
 
   @Test
-  fun `randomId with prefix customization in annotation from interface`() {
-    val customerId = typeId.randomId<Customer>() // customer_01hy0sk45qfmdsdme1j703yjet
+  fun `generate with prefix customization in annotation from interface`() {
+    val customerId = typeId.generate<Customer>() // customer_01hy0sk45qfmdsdme1j703yjet
     assertThat(customerId.toString()).startsWith("cust_")
   }
 
@@ -172,13 +172,13 @@ class TypeIdTest {
 
   @Test
   fun `for class with interface without interface`() {
-    val customerId = typeId.randomId<Entity>()
+    val customerId = typeId.generate<Entity>()
     assertThat(customerId.toString()).startsWith("entity_")
   }
 
   @Test
   fun `parse valid`() {
-    val organizationId = typeId.randomId<Organization>()
+    val organizationId = typeId.generate<Organization>()
     val parsedUserId = typeId.parse<Organization>(organizationId.toString())
     assertThat(parsedUserId).isEqualTo(organizationId)
   }
@@ -191,7 +191,7 @@ class TypeIdTest {
 
   @Test
   fun `parseToValidated valid`() {
-    val organizationId = typeId.randomId<Organization>()
+    val organizationId = typeId.generate<Organization>()
     val parsedOrganizationId = typeId.parseToValidated<Organization>(organizationId.toString())
     assertThat(parsedOrganizationId).isInstanceOf(Validated.Valid::class.java)
     assertThat(parsedOrganizationId).isEqualTo(Validated.Valid(organizationId))
@@ -199,7 +199,7 @@ class TypeIdTest {
 
   @Test
   fun `parseToValidated valid with entity type`() {
-    val organizationId = typeId.randomId<Organization>()
+    val organizationId = typeId.generate<Organization>()
     val parsedOrganizationId =
         typeId.parseToValidated(Organization::class.java, organizationId.toString())
     assertThat(parsedOrganizationId).isInstanceOf(Validated.Valid::class.java)
@@ -218,25 +218,25 @@ class TypeIdTest {
 
   @Test
   fun `isId true`() {
-    val organizationId = typeId.randomId<Organization>()
+    val organizationId = typeId.generate<Organization>()
     assertThat(typeId.isId<Organization>(organizationId.toString())).isTrue()
   }
 
   @Test
   fun `isId true with entity type`() {
-    val organizationId = typeId.randomId<Organization>()
+    val organizationId = typeId.generate<Organization>()
     assertThat(typeId.isId(Organization::class.java, organizationId.toString())).isTrue()
   }
 
   @Test
   fun `isId false for other type`() {
-    val organizationId = typeId.randomId<Organization>()
+    val organizationId = typeId.generate<Organization>()
     assertThat(typeId.isId<User>(organizationId.toString())).isFalse()
   }
 
   @Test
   fun `isId false for other type with entitytype`() {
-    val organizationId = typeId.randomId<Organization>()
+    val organizationId = typeId.generate<Organization>()
     assertThat(typeId.isId(User::class.java, organizationId.toString())).isFalse()
   }
 
@@ -247,7 +247,7 @@ class TypeIdTest {
 
   @Test
   fun `type safe parsing`() {
-    val userId = typeId.randomId<User>()
+    val userId = typeId.generate<User>()
     val userIdString = userId.toString() // user_...
     assertThatThrownBy {
           TypeId.parse<Organization>(userIdString) // must have prefix 'org'
@@ -272,7 +272,7 @@ class TypeIdTest {
   @Test
   fun `withCustomPrefix with entity type`() {
     val typeId = typeId().withCustomPrefix(Organization::class.java, TypedPrefix("org"))
-    val organizationId = typeId.randomId<Organization>()
+    val organizationId = typeId.generate<Organization>()
     assertThat(organizationId.toString()).startsWith("org_")
   }
 
@@ -287,7 +287,7 @@ class TypeIdTest {
   fun `withUUIDGenerator non default`() {
     val uuid = UUID.fromString("00000000-0000-0000-0000-000000000000")
     val typeId = typeId().withUUIDGenerator { uuid }
-    val organizationId = typeId.randomId<Organization>()
+    val organizationId = typeId.generate<Organization>()
     assertThat(organizationId.uuid).isEqualTo(uuid)
   }
 }
