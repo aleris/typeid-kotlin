@@ -401,18 +401,18 @@ There is a small [JMH](https://github.com/openjdk/jmh) microbenchmark included:
 
 In a single-threaded run, all operations perform in the range of millions of calls per second,
 which should be enough for most use cases 
-(used setup: Eclipse Temurin 17 JDK, 2021 MacBook Pro, run on version 0.0.16).
+(used setup: Eclipse Temurin 17 JDK, 2021 MacBook Pro, run on version 1.0.0).
 
 
 | Benchmark                       | Mode  | Cnt |          Score |            Error | Units |
 |---------------------------------|-------|----:|---------------:|-----------------:|-------|
-| `generate`                      | thrpt |   4 |  2.785.895,675 |  ±   791.836,864 | ops/s |
+| `generate`                      | thrpt |   4 |  2.785.895,675 | ±    791.836,864 | ops/s |
 | `generate` + `toString`         | thrpt |   4 |  2.060.627,959 | ±  1.185.777,089 | ops/s |
 | `of`                            | thrpt |   4 | 20.084.528,045 | ± 3.3543.123,085 | ops/s |
-| `of` + `toString`               | thrpt |   4 |  5.853.485,485 |  ±  1262.620,609 | ops/s |
-| `parse` (Error)                 | thrpt |   4 |    862.446,936 |  ±    63.583,514 | ops/s |
-| `parse`  (Success)              | thrpt |   4 |  9.335.663,639 |  ±   733.015,389 | ops/s |
-| `parseRaw` (Error)              | thrpt |   4 |    841.795,541 |  ±   143.272,942 | ops/s |
+| `of` + `toString`               | thrpt |   4 |  5.853.485,485 | ±   1262.620,609 | ops/s |
+| `parse` (Error)                 | thrpt |   4 |    862.446,936 | ±     63.583,514 | ops/s |
+| `parse`  (Success)              | thrpt |   4 |  9.335.663,639 | ±    733.015,389 | ops/s |
+| `parseRaw` (Error)              | thrpt |   4 |    841.795,541 | ±    143.272,942 | ops/s |
 | `parseRaw` (Success)            | thrpt |   4 | 13.555.610,086 | ±  5.390.579,926 | ops/s |
 | `parseToValidated` (Error)      | thrpt |   4 | 20.242.071,304 | ±  2.514.786,867 | ops/s |
 | `parseToValidated` (Success)    | thrpt |   4 |  7.145.891,307 | ±  8.080.357,687 | ops/s |
