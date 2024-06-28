@@ -213,6 +213,30 @@ class TypeId(private var uuidGenerator: Supplier<UUID>) {
   }
 
   /**
+   * Checks if the given string is a valid [Id] for the inferred entity type.
+   *
+   * @param TEntity the inferred entity type
+   * @param id the string typeid representation of the [Id]
+   * @return `true` if the string is a valid [Id], `false` otherwise
+   */
+  inline fun <reified TEntity> isId(id: String): Boolean {
+    return isId(TEntity::class.java, id)
+  }
+
+  /**
+   * Checks if the given string is a valid [Id] for the given entity type.
+   *
+   * @param TEntity the entity type
+   * @param entityType the entity type class
+   * @param id the string typeid representation of the [Id]
+   * @return `true` if the string is a valid [Id], `false` otherwise
+   */
+  fun <TEntity> isId(entityType: Class<out TEntity>, id: String): Boolean {
+    val validated = parseToValidated(entityType, id)
+    return validated.map { true }.orElse(false)
+  }
+
+  /**
    * Sets a custom UUID generator for generating new UUIDs. This replaces the default UUIDv7
    * generator.
    *
@@ -446,6 +470,29 @@ class TypeId(private var uuidGenerator: Supplier<UUID>) {
         id: String
     ): Validated<Id<out TEntity>> {
       return DEFAULT.parseToValidated(entityType, id)
+    }
+
+    /**
+     * Checks if the given string is a valid [Id] for the inferred entity type.
+     *
+     * @param TEntity the inferred entity type
+     * @param id the string typeid representation of the [Id]
+     * @return `true` if the string is a valid [Id], `false` otherwise
+     */
+    inline fun <reified TEntity> isId(id: String): Boolean {
+      return DEFAULT.isId<TEntity>(id)
+    }
+
+    /**
+     * Checks if the given string is a valid [Id] for the given entity type.
+     *
+     * @param TEntity the entity type
+     * @param entityType the entity type class
+     * @param id the string typeid representation of the [Id]
+     * @return `true` if the string is a valid [Id], `false` otherwise
+     */
+    fun <TEntity> isId(entityType: Class<out TEntity>, id: String): Boolean {
+      return DEFAULT.isId(entityType, id)
     }
 
     /**

@@ -99,6 +99,24 @@ class TypeIdTest {
   }
 
   @Test
+  fun `default isId true`() {
+    val organizationId = TypeId.randomId<Organization>()
+    assertThat(TypeId.isId<Organization>(organizationId.toString())).isTrue()
+  }
+
+  @Test
+  fun `default isId true with entity type`() {
+    val organizationId = TypeId.randomId<Organization>()
+    assertThat(TypeId.isId(Organization::class.java, organizationId.toString())).isTrue()
+  }
+
+  @Test
+  fun `default isId false`() {
+    val organizationId = TypeId.randomId<Organization>()
+    assertThat(TypeId.isId<User>(organizationId.toString())).isFalse()
+  }
+
+  @Test
   fun `default parseToValidated with entity type`() {
     val userId = TypeId.randomId<User>()
     val parsedUserId = TypeId.parseToValidated(User::class.java, userId.toString())
@@ -159,20 +177,20 @@ class TypeIdTest {
   }
 
   @Test
-  fun `tryParse valid`() {
+  fun `parse valid`() {
     val organizationId = typeId.randomId<Organization>()
     val parsedUserId = typeId.parse<Organization>(organizationId.toString())
     assertThat(parsedUserId).isEqualTo(organizationId)
   }
 
   @Test
-  fun `tryParse invalid`() {
+  fun `parse invalid`() {
     assertThatThrownBy { typeId.parse<Organization>("_") }
         .isInstanceOf(IllegalArgumentException::class.java)
   }
 
   @Test
-  fun `parse valid`() {
+  fun `parseToValidated valid`() {
     val organizationId = typeId.randomId<Organization>()
     val parsedOrganizationId = typeId.parseToValidated<Organization>(organizationId.toString())
     assertThat(parsedOrganizationId).isInstanceOf(Validated.Valid::class.java)
@@ -180,13 +198,51 @@ class TypeIdTest {
   }
 
   @Test
-  fun `parse invalid`() {
+  fun `parseToValidated valid with entity type`() {
+    val organizationId = typeId.randomId<Organization>()
+    val parsedOrganizationId =
+        typeId.parseToValidated(Organization::class.java, organizationId.toString())
+    assertThat(parsedOrganizationId).isInstanceOf(Validated.Valid::class.java)
+    assertThat(parsedOrganizationId).isEqualTo(Validated.Valid(organizationId))
+  }
+
+  @Test
+  fun `parseToValidated invalid`() {
     val parsedOrganizationId = typeId.parseToValidated<Organization>("_")
     assertThat(parsedOrganizationId).isInstanceOf(Validated.Invalid::class.java)
     assertThat(parsedOrganizationId)
         .isEqualTo(
             Validated.Invalid<Organization>(
                 "Id with empty prefix must not contain the separator '_'"))
+  }
+
+  @Test
+  fun `isId true`() {
+    val organizationId = typeId.randomId<Organization>()
+    assertThat(typeId.isId<Organization>(organizationId.toString())).isTrue()
+  }
+
+  @Test
+  fun `isId true with entity type`() {
+    val organizationId = typeId.randomId<Organization>()
+    assertThat(typeId.isId(Organization::class.java, organizationId.toString())).isTrue()
+  }
+
+  @Test
+  fun `isId false for other type`() {
+    val organizationId = typeId.randomId<Organization>()
+    assertThat(typeId.isId<User>(organizationId.toString())).isFalse()
+  }
+
+  @Test
+  fun `isId false for other type with entitytype`() {
+    val organizationId = typeId.randomId<Organization>()
+    assertThat(typeId.isId(User::class.java, organizationId.toString())).isFalse()
+  }
+
+  @Test
+  fun `isId false for invalid`() {
+    assertThat(typeId.isId<User>("user_not_valid_id")).isFalse()
   }
 
   @Test

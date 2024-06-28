@@ -1,6 +1,6 @@
 # typeid-kotlin
 ![Build Status](https://github.com/aleris/typeid-kotlin/actions/workflows/build-on-push.yml/badge.svg)
-![Current Version](https://img.shields.io/badge/Version-0.0.14-blue)
+![Current Version](https://img.shields.io/badge/Version-0.0.15-blue)
 
 
 ## A Kotlin implementation of [TypeID](https://github.com/jetpack-io/typeid).
@@ -25,14 +25,14 @@ To use with Maven:
 <dependency>
     <groupId>earth.adi</groupId>
     <artifactId>typeid-kotlin</artifactId>
-    <version>0.0.14</version>
+    <version>0.0.15</version>
 </dependency>
 ```
 
 To use via Gradle:
 
 ```kotlin
-implementation("earth.adi:typeid-kotlin:0.0.14")
+implementation("earth.adi:typeid-kotlin:0.0.15")
 ```
 
 
@@ -199,6 +199,19 @@ These approaches are much faster when the input is untrusted and can result in l
 (see [Benchmarks](#benchmarks)).
 
 
+### isId
+
+Check if a string is a valid id of the given type:
+
+```kotlin
+val isUserId = typeId.isId<UserId>("user_01h455vb4pex5vsknk084sn02q")
+```
+
+Is a convenience method that uses `parseToValidated` and returns a boolean.
+It can be used to check if a string is a valid id of an expected type 
+as it returns `false` if the id is valid but of a different type.
+
+
 ### Type safety
 
 At its base, a `typeid` is just a prefix followed by `_` and an encoded UUID 
@@ -293,7 +306,7 @@ for Java, Kotlin (kotlinx.serialization), and Jackson.
 
 #### Kotlin (kotlinx.serialization)
 
-Both [Id] and [RawId] have `@Serializable` and can be used with `kotlinx.serialization`.
+Both `Id` and `RawId` have `@Serializable` and can be used with `kotlinx.serialization`.
 You need to include the actual serialization dependency in your project.
 
 For example, with CBOR:
